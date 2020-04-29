@@ -8,24 +8,25 @@ from image_processing import get_galaxies
 
 data_dir = os.path.join('..', 'data', 'scored')
 labels_dir = os.path.join('..', 'data', 'scored.csv')
+RED = [255, 0, 0]
 
 
 def noise_in_background(img):
     fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
+
+    # draw original image on the left plot
     ax1.imshow(img, cmap='gray')
     ax1.set_title('Original image')
-    galaxy_coords, _ = get_galaxies(img, threshold=3)
+    background_threshold = 5
+    galaxy_coords, _ = get_galaxies(img, threshold=background_threshold)
+
+    # mark "background" spots red
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
     for coord in galaxy_coords:
-        # cv2.circle(img, coord, 30, thickness=1, color=255)
-        cv2.putText(img,
-                    str(img[coord[0], coord[1]]),
-                    coord,
-                    cv2.FONT_HERSHEY_COMPLEX_SMALL,
-                    1,
-                    255,
-                    1)
-        # img[coord[0], coord[1]] = 255
-    ax2.imshow(img, cmap='gray')
+        img[coord[0], coord[1], :] = RED
+
+    ax2.imshow(img)
+    ax1.set_title('All pixels with value >= {}'.format(background_threshold))
     description = "description goes here"
     fig.text(.5, .05, description, ha='center')
     plt.show()
