@@ -1,3 +1,6 @@
+"""
+    `python visualize.py -h` for usage help
+"""
 import os
 import random
 import argparse
@@ -72,7 +75,9 @@ def visualize_noise_in_background(score_threshold=2.0, randomize=True, n_images=
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Visualizes small and almost invisible clusters (possibly '
-                                                 'representing galaxies) in images')
+                                                 'representing galaxies) in images. Picks real galaxy images randomly,'
+                                                 'and displays the original image, along with the image where all'
+                                                 'the clusters are marked in red.')
     parser.add_argument('--n_images', type=int, default=1, help='number of images to visualize')
     parser.add_argument('--background_threshold', type=int, default=10, help='minimum pixel intensity (0-255) for a '
                                                                              'pixel to be considered non-background')
