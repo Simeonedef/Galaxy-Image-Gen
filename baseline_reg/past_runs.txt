@@ -1,0 +1,24 @@
+15 epochs 
+rescaling 1/255
+batch size: 128
+img height & width: 150px
+
+loss: 0.2781 MSE: 0.2384
+submission score: 1.07994
+
+================================
+15 epochs 
+no rescaling
+batch size: 128
+img height & width: 150px
+
+loss: 0.3485 MSE: 0.3865
+
+================================
+15 epochs 
+rescaling 1/255
+batch size: 128
+img height & width: 250px
+
+loss: 0.1766  MSE: 0.0868
+submission score: 1.12761
