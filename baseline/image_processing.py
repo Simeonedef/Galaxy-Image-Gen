@@ -1,7 +1,8 @@
 import os
+from collections import Counter, defaultdict
+
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 
 data_dir = os.path.join('..', 'data', 'scored')
 
@@ -90,10 +91,16 @@ class Cluster:
         return [Cluster(img, cluster_pixels) for cluster_pixels in clusters]
 
 
-def get_galaxies(img, threshold=40):
-    # find all pixels which are not pitch black
-    print(np.where(img != 0))
-    print(img.shape)
+def get_galaxy_pixels(img, threshold=40):
+    """
+    @param img: greyscale image of a real galaxy, noisy galaxy or a completely fake image
+    @type img: 2D numpy array
+    @param threshold: pixels above threshold are considered a part of a galaxy
+    @type threshold: int, [0, 255]
+    @return: the coordinates of the galaxy pixels and their intenstity
+    @rtype: pair of lists
+    """
+    # find all pixels which are above threshold
     galaxy_x, galaxy_y = tuple(np.where(img > threshold))
 
     # list of pairs representing the galaxy pixel coords
@@ -110,30 +117,54 @@ def get_background(img):
     return background_x, background_y
 
 
-def generate_statistics(data_dir, n_images=10):
-    for ind, filename in enumerate(os.listdir(data_dir)):
-        if ind == n_images:
-            break
-        img = cv2.imread(os.path.join(data_dir, filename), cv2.IMREAD_GRAYSCALE)
+# def estimate_background_intensity_threshold(img, background_pixels_ratio=0.8):
+#     pixel_intesity_cnts = pixel_intensity_histogram(img)
+#     num_total_pixels = img.shape[0] * img.shape[1]
+#
+#     num_background_pixels = 0
+#     for intensity, cnt in pixel_value_cnts.values():
+#         num_background_pixels += cnt
+#         if num_background_pixels / num_total_pixels > background_pixels_ratio:
+#             break
 
-        galaxy_coords, galaxy_pixel_values = get_galaxies(img)
-        background_x, background_y = get_background(img)
-        num_background_pixels = len(background_x)
 
-        if len(galaxy_coords) > 10000:
-            print(galaxy_pixel_values)
-            print(img)
+def estimate_background_intensity_threshold(img, background_pixels_ratio=0.8):
+    """
+    Start from the darkest pixel (intensity = 0) and iteratively increase the intensity, adding the pixels with
+    that intensity to 'background'. We stop when the number of pixels will reach some threshold (like 80% of total
+    pixels). Undefined behavior for fake/noise images.
+    @param img:
+    @type img:
+    @param background_pixels_ratio:
+    @type background_pixels_ratio:
+    @return:
+    @rtype:
+    """
+    assert img.ndim == 2
 
-        print(filename, len(galaxy_coords), num_background_pixels)
+    pixel_intesity_cnts = pixel_intensity_histogram(img)
+    num_total_pixels = img.shape[0] * img.shape[1]
+
+    num_background_pixels = 0
+    for intensity in range(0, 256):
+        num_background_pixels += pixel_intesity_cnts[intensity]
+        if num_background_pixels / num_total_pixels > background_pixels_ratio:
+            return intensity
+
+
+def pixel_intensity_histogram(img):
+    """
+    @param img: a greyscale image
+    @type img: 2d np.array
+    @return: a mapping of pixel intesity -> cnt of pixels with that intensity in img
+    @rtype: dict
+    """
+    return defaultdict(int, Counter(img.flatten()))
 
 
 if __name__ == "__main__":
     # just testing the Cluster class
-    img = cv2.imread(os.path.join(data_dir, '1010772.png'), cv2.IMREAD_GRAYSCALE)
-    galaxy_coords, _ = get_galaxies(img)
-    clusters = Cluster.find_clusters(img, galaxy_coords)
-    for cluster in clusters:
-        print(cluster)
-        print(cluster.size())
-        print(cluster.get_center_pixel())
-        print(cluster.get_intensity())
+    img = cv2.imread(os.path.join(data_dir, '1013618.png'), cv2.IMREAD_GRAYSCALE)
+    pixel_value_cnts = Counter(img.flatten())
+
+    print(pixel_value_cnts)
