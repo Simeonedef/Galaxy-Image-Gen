@@ -35,8 +35,8 @@ def extract_image_information(img):
 def extract_all_information(images_dir):
     image_data = {}
     for ind, image_id in enumerate(tqdm(scored_image_ids)):
-        if ind == 4:
-            break
+        # if ind == 4:
+        #     break
         image_path = os.path.join(images_dir, "{}.png".format(image_id))
         img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
