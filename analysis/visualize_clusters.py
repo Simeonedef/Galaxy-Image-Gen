@@ -10,8 +10,8 @@ import pandas as pd
 from baseline.image_processing import get_galaxy_pixels, Cluster
 
 
-data_dir = os.path.join('../..', 'data', 'scored')
-labels_dir = os.path.join('../..', 'data', 'scored.csv')
+data_dir = os.path.join('..', 'data', 'scored')
+labels_dir = os.path.join('..', 'data', 'scored.csv')
 RED = [255, 0, 0]
 
 

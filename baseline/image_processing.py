@@ -43,6 +43,14 @@ class Cluster:
         '''
         return self.intensity
 
+    def num_intensities(self):
+        """
+        @return: number of different intensities in the cluster pixels
+        @rtype: int
+        """
+        pixel_x, pixel_y = zip(*self.pixels)
+        return np.unique(self.img[pixel_x, pixel_y].flatten(), return_counts=True)[0].shape[0]
+
     @staticmethod
     def find_clusters(img, pixels):
         """
