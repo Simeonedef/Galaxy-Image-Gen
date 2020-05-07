@@ -7,7 +7,7 @@ import argparse
 import cv2
 import matplotlib.pyplot as plt
 import pandas as pd
-from image_processing import get_galaxies, Cluster
+from baseline.image_processing import get_galaxy_pixels, Cluster
 
 
 data_dir = os.path.join('..', 'data', 'scored')
@@ -21,7 +21,7 @@ def noise_in_background(img, background_threshold):
     # draw original image on the left plot
     ax1.imshow(img, cmap='gray')
     ax1.set_title('Original image')
-    galaxy_coords, _ = get_galaxies(img, threshold=background_threshold)
+    galaxy_coords, _ = get_galaxy_pixels(img, threshold=background_threshold)
 
     img_rgb = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
 

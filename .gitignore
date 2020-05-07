@@ -1,2 +1,5 @@
 data
 .idea
+
+# files with extracted image information, they are too large for Github
+analysis/image_data.*
