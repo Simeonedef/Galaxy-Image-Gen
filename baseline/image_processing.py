@@ -141,12 +141,12 @@ def estimate_background_intensity_threshold(img, background_pixels_ratio=0.8):
     Start from the darkest pixel (intensity = 0) and iteratively increase the intensity, adding the pixels with
     that intensity to 'background'. We stop when the number of pixels will reach some threshold (like 80% of total
     pixels). Undefined behavior for fake/noise images.
-    @param img:
-    @type img:
-    @param background_pixels_ratio:
-    @type background_pixels_ratio:
-    @return:
-    @rtype:
+    @param img: a greyscale image
+    @type img: 2D numpy array
+    @param background_pixels_ratio: the ratio of background vs all pixels when we stop the iteration
+    @type background_pixels_ratio: float, [0, 1]
+    @return: the pixel intensity such that pixels of <= intensity occupy at least background_pixels_ratio of the image
+    @rtype: int, [0, 255]
     """
     assert img.ndim == 2
 
