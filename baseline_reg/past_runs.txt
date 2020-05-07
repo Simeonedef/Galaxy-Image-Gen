@@ -22,3 +22,93 @@ img height & width: 250px
 
 loss: 0.1766  MSE: 0.0868
 submission score: 1.12761
+
+================================
+15 epochs 
+rescaling 1/255
+batch size: 128
+img height & width: 200px
+
+loss: 0.2012  MSE: 0.1162
+submission score: 1.09723
+
+================================
+50 epochs 
+rescaling 1/255
+batch size: 128
+img height & width: 150px
+
+loss: 0.1002  MSE: 0.0334
+submission score: 1.10230
+
+================================
+20 epochs 
+rescaling 1/255
+batch size: 128
+img height & width: 150px
+Dropout: 0.2
+BatchNorm: No
+L2 reg: 0.001
+
+loss: 0.5863  MSE: 0.7258
+submission score: 1.02704
+
+================================
+50 epochs 
+rescaling 1/255
+batch size: 128
+img height & width: 150px
+Dropout: 0.2
+BatchNorm: Yes
+L2 reg: 0.001
+
+loss: 0.6253  MSE: 0.4269
+submission score: 1.10104
+
+================================
+25 epochs 
+rescaling 1/255
+batch size: 32
+img height & width: 150px
+Dropout: 0.2
+BatchNorm: Yes
+L2 reg: 0.01
+Conv_layer_size: 16,16
+Dense_layer_size: 64
+learning_rate: 1e-3
+
+loss: 0.7091  MSE: 0.6978
+submission score: 1.25769
+
+================================
+loss = MSE
+================================
+40 epochs 
+rescaling 1/255
+batch size: 128
+img height & width: 150px
+Dropout: 0.2
+BatchNorm: Yes
+L2 reg: 0.01
+Conv_layer_size: 16,32
+Dense_layer_size: 32
+learning_rate: 1e-3
+
+loss: 1.2174  MAE: 0.6310
+submission score: 1.03624
+
+================================
+25 epochs 
+rescaling 1/255
+batch size: 128
+img height & width: 150px
+Dropout: 0.2
+BatchNorm: Yes
+L2 reg: 0.01
+Conv_layer_size: 16,32
+Dense_layer_size: none
+learning_rate: 1e-3
+
+loss: 0.8455 MAE: 0.7034
+submission score: 1.25497
+
