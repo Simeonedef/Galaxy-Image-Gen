@@ -31,11 +31,13 @@ def labeled_images_galaxy_patches(background_threshold=10,
     if not os.path.exists(labeled_data_out_dir):
         os.makedirs(labeled_data_out_dir)
 
+    print("Saving images to: {}".format(labeled_data_out_dir))
+
     # list of dicts
     patch_info = []
     for ind, image_id in enumerate(tqdm(real_image_ids)):
-        # if ind == 100:
-        #     break
+        if ind == 100:
+            break
         image_path = os.path.join(labeled_data_dir, "{}.png".format(image_id))
         img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
@@ -60,6 +62,7 @@ def labeled_images_galaxy_patches(background_threshold=10,
 
     patch_info_df = to_df(patch_info)
     patch_info_df.to_csv(labels_out_csv)
+    print("Saving csv to: {}".format(labels_out_csv))
 
 
 def to_df(data):
@@ -72,7 +75,7 @@ def to_df(data):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Finds the galaxies in the images, and stores the cropped galaxies ('
                                                  'patches) as independent images.')
-    parser.add_argument('--background_threshold', type=int, default=10, help='minimum pixel intensity (0-255) for a '
+    parser.add_argument('--background_threshold', type=int, default=5, help='minimum pixel intensity (0-255) for a '
                                                                              'pixel to be considered as part of a galaxy')
     parser.add_argument('--patch_size', type=int, default=32, help='The size of the extracted galaxy patches')
     parser.add_argument('--min_galaxy_size', type=int, default=None, help='disregard galaxies with number of pixels smaller than this number')
