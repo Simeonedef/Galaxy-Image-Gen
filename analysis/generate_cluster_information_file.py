@@ -1,4 +1,5 @@
 import os
+import argparse
 
 import pickle
 import cv2
@@ -7,16 +8,25 @@ from tqdm import tqdm
 
 from baseline.image_processing import Cluster, get_galaxy_pixels, estimate_background_intensity_threshold, pixel_intensity_histogram
 
-data_dir = os.path.join('..', 'data', 'scored')
-labels_dir = os.path.join('..', 'data', 'scored.csv')
-analysis_dir = os.path.join('.', 'analysis')
-image_information_file_path = os.path.join(analysis_dir, 'image_data.pkl')
-image_information_file_path_df = os.path.join(analysis_dir, 'image_data.csv')
+main_data_dir = os.path.join('..', 'data')
+
+scored_images_dir = os.path.join('..', 'data', 'scored')
+scores_path = os.path.join('..', 'data', 'scored.csv')
+scored_images_pkl_out = os.path.join(main_data_dir, 'scored_info.pkl')
+scored_images_df_out = os.path.join(main_data_dir, 'scored_info.csv')
+
+labeled_images_dir = os.path.join('..', 'data', 'labeled')
+labels_path = os.path.join('..', 'data', 'labeled.csv')
+labeled_images_pkl_out = os.path.join(main_data_dir, 'labeled_info.pkl')
+labeled_images_df_out = os.path.join(main_data_dir, 'labeled_info.csv')
 
 
-def extract_image_information(img):
+def extract_image_information(img, background_threshold=None):
+
+    if background_threshold is None:
+        background_threshold = estimate_background_intensity_threshold(img, background_pixels_ratio=0.8)
+
     data = {}
-    background_threshold = estimate_background_intensity_threshold(img, background_pixels_ratio=0.8)
     # pixel_intensity_hist = pixel_intensity_histogram(img)
     galaxy_pixels, _ = get_galaxy_pixels(img, threshold=background_threshold)
     clusters = Cluster.find_clusters(img, galaxy_pixels)
@@ -47,28 +57,13 @@ def extract_all_information_query(images_dir):
     return image_data
 
 
-def extract_all_information(images_dir):
-    image_data = {}
-    for ind, image_id in enumerate(tqdm(scored_image_ids)):
-        # if ind == 4:
-        #     break
-        image_path = os.path.join(images_dir, "{}.png".format(image_id))
-        img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-
-        data = extract_image_information(img)
-        data['score'] = scores_df.at[image_id, 'Actual']
-        image_data[image_id] = data
-
-    return image_data
-
-
 def load(format='df'):
     if format == 'pkl':
-        with open(image_information_file_path, 'rb') as f:
+        with open(scored_images_pkl_out, 'rb') as f:
             data = pickle.load(f)
             return data
     else:
-        df = pd.read_csv(image_information_file_path_df, index_col='id')
+        df = pd.read_csv(scored_images_df_out, index_col='id')
         return df
 
 
@@ -115,20 +110,72 @@ def to_df(data):
     return df
 
 
-if __name__ == "__main__":
-    scored_image_ids = [x.replace('.png', '') for x in os.listdir(data_dir)]
-    scores_df = pd.read_csv(labels_dir, index_col='Id')
+def generate_scored_images_info_file():
+    scored_image_ids = [x.replace('.png', '') for x in os.listdir(scored_images_dir)]
+    scores_df = pd.read_csv(scores_path, index_col='Id')
     scores_df.index = scores_df.index.astype(str)
 
-    data = extract_all_information(data_dir)
+    image_data = {}
+    for ind, image_id in enumerate(tqdm(scored_image_ids)):
+        # if ind == 4:
+        #     break
+        image_path = os.path.join(scored_images_dir, "{}.png".format(image_id))
+        img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
-    if not os.path.exists(analysis_dir):
-        os.makedirs(analysis_dir)
+        data = extract_image_information(img)
+        data['score'] = scores_df.at[image_id, 'Actual']
+        image_data[image_id] = data
+
+    if not os.path.exists(main_data_dir):
+        os.makedirs(main_data_dir)
 
     # save as a pickled python dict file
-    with open(image_information_file_path, 'wb') as f:
-        pickle.dump(data, f)
+    with open(scored_images_pkl_out, 'wb') as f:
+        pickle.dump(image_data, f)
 
-    # save as csv
-    df = to_df(data)
-    df.to_csv(image_information_file_path_df, index_label='id')
+    df = to_df(image_data)
+    df.to_csv(scored_images_df_out, index_label='id')
+
+
+def generate_labeled_images_info_file(background_threshold=4):
+    """
+    Currently it only considers real images
+    @return:
+    @rtype:
+    """
+    labels_df = pd.read_csv(labels_path, index_col='Id')
+    labels_df.index = labels_df.index.astype(str)
+    labels_df = labels_df[labels_df.Actual == 1.0]
+
+    real_image_ids = labels_df.index.values
+    image_data = {}
+    for ind, image_id in enumerate(tqdm(real_image_ids)):
+        # if ind == 4:
+        #     break
+        image_path = os.path.join(labeled_images_dir, "{}.png".format(image_id))
+        img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+        data = extract_image_information(img, background_threshold=background_threshold)
+        image_data[image_id] = data
+
+    # TODO: save as csv as well
+    print("Saving pkl to: {}".format(labeled_images_pkl_out))
+    print(image_data)
+    with open(labeled_images_pkl_out, 'wb') as f:
+        pickle.dump(image_data, f)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Creates a file containing galaxy information about all the images from the dataset.')
+    parser.add_argument('--dataset', type=str, choices=['scored', 'labeled'], default='scored', help='scored or labeled dataset')
+    parser.add_argument('--background_threshold', type=int, default=5, help='minimum pixel intensity (0-255) for a '
+                                                                            'pixel to be considered as part of a '
+                                                                            'galaxy')
+    parser.add_argument('--min_score', type=float, default=5, help='disregard fake images i.e images with score < min_score,'
+                                                                   'used only if dataset is scored')
+    args = parser.parse_args()
+
+    if args.dataset == 'scored':
+        generate_scored_images_info_file()
+    else:
+        generate_labeled_images_info_file(background_threshold=args.background_threshold)
