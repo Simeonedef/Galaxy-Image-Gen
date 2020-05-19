@@ -65,6 +65,7 @@ class Cluster:
 
         if bottom >= 0 and left >= 0 and top < self.img.shape[0] and right < self.img.shape[1]:
             patch = self.img[bottom: top, left: right]  # down-up
+            assert patch.shape[0] == patch_size and patch.shape[1] == patch_size
             return patch
         else:
             return None

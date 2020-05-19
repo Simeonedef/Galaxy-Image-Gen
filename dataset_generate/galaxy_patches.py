@@ -53,7 +53,7 @@ def labeled_images_galaxy_patches(background_threshold=10,
 
             patch_id = "{}_{:0>2d}.png".format(image_id, cluster_ind)
             patch_path = os.path.join(labeled_data_out_dir, patch_id)
-            plt.imsave(patch_path, patch, cmap='gray')
+            plt.imsave(patch_path, patch, cmap='gray', vmin=0, vmax=255)
 
             curr_patch_info = {'patch_id': patch_id,
                                'intensity': cluster.get_intensity(),
