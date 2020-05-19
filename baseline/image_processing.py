@@ -51,6 +51,24 @@ class Cluster:
         pixel_x, pixel_y = zip(*self.pixels)
         return np.unique(self.img[pixel_x, pixel_y].flatten(), return_counts=True)[0].shape[0]
 
+    def crop_patch(self, patch_size):
+        """
+        @param patch_size: the size of the resulting cropped patch, currently the width and height of patch are equal
+        @type patch_size: int
+        @return: a patch of the image which contains the galaxy
+        @rtype: 2D np.array
+        """
+        bottom = self.center_pixel[0] - patch_size//2 + 1
+        top = self.center_pixel[0] + patch_size // 2 + 1
+        left = self.center_pixel[1] - patch_size // 2 + 1
+        right = self.center_pixel[1] + patch_size // 2 + 1
+
+        if bottom >= 0 and left >= 0 and top < self.img.shape[0] and right < self.img.shape[1]:
+            patch = self.img[bottom: top, left: right]  # down-up
+            return patch
+        else:
+            return None
+
     @staticmethod
     def find_clusters(img, pixels):
         """
