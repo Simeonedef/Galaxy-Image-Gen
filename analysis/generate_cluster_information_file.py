@@ -9,7 +9,7 @@ from baseline.image_processing import Cluster, get_galaxy_pixels, estimate_backg
 
 data_dir = os.path.join('..', 'data', 'scored')
 labels_dir = os.path.join('..', 'data', 'scored.csv')
-analysis_dir = os.path.join('..', 'analysis')
+analysis_dir = os.path.join('.', 'analysis')
 image_information_file_path = os.path.join(analysis_dir, 'image_data.pkl')
 image_information_file_path_df = os.path.join(analysis_dir, 'image_data.csv')
 
@@ -30,6 +30,21 @@ def extract_image_information(img):
         'cluster_centers': [cluster.get_center_pixel() for cluster in clusters]
     })
     return data
+
+
+def extract_all_information_query(images_dir):
+    image_data = {}
+    scored_image_ids = [x.replace('.png', '') for x in os.listdir(images_dir)]
+    for ind, image_id in enumerate(tqdm(scored_image_ids)):
+        # if ind == 4:
+        #     break
+        image_path = os.path.join(images_dir, "{}.png".format(image_id))
+        img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+        data = extract_image_information(img)
+        image_data[image_id] = data
+
+    return image_data
 
 
 def extract_all_information(images_dir):
@@ -60,6 +75,24 @@ def load(format='df'):
 # util function
 def get_values_for(data, key):
     return [data[key] for data in data.values()]
+
+
+def to_df_query(data):
+    df = pd.DataFrame(index=list(data.keys()))
+    df.index.name = 'Id'
+
+    df['background_threshold'] = get_values_for(data, 'background_threshold')
+    df.background_threshold = df.background_threshold.astype(int)
+
+    df['cluster_num'] = get_values_for(data, 'cluster_num')
+    df.cluster_num = df.cluster_num.astype(int)
+
+    df['cluster_sizes'] = get_values_for(data, 'cluster_sizes')
+    df['cluster_peak_intensities'] = get_values_for(data, 'cluster_peak_intensities')
+    df['cluster_num_intensities'] = get_values_for(data, 'cluster_num_intensities')
+    df['cluster_centers'] = get_values_for(data, 'cluster_centers')
+
+    return df
 
 
 def to_df(data):
