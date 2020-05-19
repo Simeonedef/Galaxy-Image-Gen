@@ -110,10 +110,13 @@ def to_df(data):
     return df
 
 
-def generate_scored_images_info_file():
+def generate_scored_images_info_file(min_score, background_threshold=None):
     scored_image_ids = [x.replace('.png', '') for x in os.listdir(scored_images_dir)]
     scores_df = pd.read_csv(scores_path, index_col='Id')
     scores_df.index = scores_df.index.astype(str)
+
+    if min_score is not None:
+        scored_image_ids = scores_df[scores_df.Actual >= min_score].index.values
 
     image_data = {}
     for ind, image_id in enumerate(tqdm(scored_image_ids)):
@@ -122,7 +125,7 @@ def generate_scored_images_info_file():
         image_path = os.path.join(scored_images_dir, "{}.png".format(image_id))
         img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
-        data = extract_image_information(img)
+        data = extract_image_information(img, background_threshold=background_threshold)
         data['score'] = scores_df.at[image_id, 'Actual']
         image_data[image_id] = data
 
@@ -171,11 +174,11 @@ if __name__ == "__main__":
     parser.add_argument('--background_threshold', type=int, default=5, help='minimum pixel intensity (0-255) for a '
                                                                             'pixel to be considered as part of a '
                                                                             'galaxy')
-    parser.add_argument('--min_score', type=float, default=5, help='disregard fake images i.e images with score < min_score,'
-                                                                   'used only if dataset is scored')
+    parser.add_argument('--min_score', type=float, default=None, help='disregard fake images i.e images with score < min_score,'
+                                                                      'used only if dataset is scored')
     args = parser.parse_args()
 
     if args.dataset == 'scored':
-        generate_scored_images_info_file()
+        generate_scored_images_info_file(args.min_score, background_threshold=args.background_threshold)
     else:
         generate_labeled_images_info_file(background_threshold=args.background_threshold)
