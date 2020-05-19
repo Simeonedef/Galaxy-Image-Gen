@@ -36,8 +36,8 @@ def labeled_images_galaxy_patches(background_threshold=10,
     # list of dicts
     patch_info = []
     for ind, image_id in enumerate(tqdm(real_image_ids)):
-        if ind == 100:
-            break
+        # if ind == 100:
+        #     break
         image_path = os.path.join(labeled_data_dir, "{}.png".format(image_id))
         img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
