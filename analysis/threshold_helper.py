@@ -123,7 +123,7 @@ if __name__ == "__main__":
                                                  'representing galaxies) in images. Picks real galaxy images randomly,'
                                                  'and displays the original image, along with the image where all'
                                                  'the clusters are marked in red.')
-    parser.add_argument('--grid', type=bool, default=False, help='visualize grid')
+    parser.add_argument('--grid', help='visualize grid', action="store_true")
     args = parser.parse_args()
 
     visualize_noise_in_background(grid=args.grid)
