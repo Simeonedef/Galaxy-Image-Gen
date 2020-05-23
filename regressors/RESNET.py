@@ -31,6 +31,7 @@ class ResnetRegressor:
     def preprocess(self, images):
         images = [Image.fromarray(image.astype(np.uint8)).resize(self.size) for image in images]
         images = np.array([np.asarray(image).reshape(1, *self.size) for image in images])
+        images = images/255.
         return torch.FloatTensor(images)
 
     def score(self, images):
