@@ -12,3 +12,6 @@ pretrained_weights
 
 # ipynb
 .ipynb_checkpoints
+
+# pycache
+*__pycache__
