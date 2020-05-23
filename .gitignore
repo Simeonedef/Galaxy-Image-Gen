@@ -3,3 +3,12 @@ data
 
 # files with extracted image information, they are too large for Github
 analysis/image_data.*
+
+# weights
+pretrained_weights
+
+# vscode
+.vscode
+
+# ipynb
+.ipynb_checkpoints

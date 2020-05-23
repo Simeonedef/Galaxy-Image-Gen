@@ -1,5 +1,9 @@
+import sys
+import os
+sys.path.append(os.path.abspath('..'))
 import argparse
 from generators.simple_generative_model import BaselineGenerativeModel
+from regressors.RESNET import ResnetRegressor
 
 class DummyRegressor:
     def score(self, images):
@@ -20,7 +24,7 @@ def get_generator(args):
 
 def get_regressor(args):
     if args.regressor == 'resnet':
-        return DummyRegressor()
+        return ResnetRegressor()
     else:
         raise Exception("model does not exist")
 
@@ -40,6 +44,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     generator = get_generator(args)
-    regressor = get_generator(args)
+    regressor = get_regressor(args)
 
     evaluate(generator, regressor, args.n_images)
