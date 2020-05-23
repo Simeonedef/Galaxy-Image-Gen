@@ -32,19 +32,22 @@ class BaselineGenerativeModel:
         self.galaxy_centers = self.sample_galaxy_centers()
         self.galaxy_sizes = self.sample_galaxy_sizes()
 
-    def draw(self):
-        # need to call sample first
+    def generate(self, n_images):
+        return [self.draw() for _ in range(n_images)]
+
+    def draw(self, show=False):
+        self.sample()
         assert self.num_galaxies is not None
 
         img = np.ones((self.image_height, self.image_width))
         for center, size in zip(self.galaxy_centers, self.galaxy_sizes):
             self.draw_galaxy(img, center, size)
 
-        plt.imshow(img, cmap='gray')
-        plt.show()
+        if show:
+            plt.imshow(img, cmap='gray')
+            plt.show()
 
         return img
-
 
     def sample_num_galaxies(self):
         return int(np.random.normal(self.mean_num_galaxies, self.std_num_galaxies))
@@ -108,5 +111,4 @@ if __name__ == "__main__":
     model = BaselineGenerativeModel(mean_num_galaxies=4, std_num_galaxies=1,
                                     mean_galaxy_size=20, std_galaxy_size=5)
 
-    model.sample()
     model.draw()
