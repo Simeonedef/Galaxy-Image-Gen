@@ -6,7 +6,7 @@ import cv2
 import pandas as pd
 from tqdm import tqdm
 
-from baseline.image_processing import Cluster, get_galaxy_pixels, estimate_background_intensity_threshold, pixel_intensity_histogram
+from common.image_processing import Cluster, get_galaxy_pixels, estimate_background_intensity_threshold, pixel_intensity_histogram
 
 main_data_dir = os.path.join('..', 'data')
 

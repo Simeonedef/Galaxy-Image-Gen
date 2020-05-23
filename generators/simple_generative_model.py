@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 class BaselineGenerativeModel:
     """
-    A simple baseline generative model.
+    A simple common generative model.
     - The number of galaxies is sampled from a normal distribution N(?, ?)
     - The center of each galaxy is sampled from a uniform distribution over the image pixels
     - The size of each galaxy is sampled from a normal distribution N(?, ?)

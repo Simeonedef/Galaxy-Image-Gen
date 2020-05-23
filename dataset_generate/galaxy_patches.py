@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import cv2
 
-# This is a hack to find the 'baseline' folder, for some reason my PYTHONPATH is not working properly
+# This is a hack to find the 'common' folder, for some reason my PYTHONPATH is not working properly
 import sys
 sys.path.append(os.path.abspath('..'))
-from baseline.image_processing import Cluster, get_galaxy_pixels
+from common.image_processing import Cluster, get_galaxy_pixels
 
 labeled_data_dir = os.path.join('..', 'data', 'labeled')
 labels_dir = os.path.join('..', 'data', 'labeled.csv')

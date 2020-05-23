@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import sys
 sys.path.append(os.path.abspath('..'))
-from baseline.image_processing import get_galaxy_pixels, Cluster
+from common.image_processing import get_galaxy_pixels, Cluster
 
 data_dir = os.path.join('..', 'data', 'scored')
 labels_dir = os.path.join('..', 'data', 'scored.csv')

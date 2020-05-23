@@ -14,7 +14,7 @@ import cv2
 import swifter
 
 from analysis.generate_cluster_information_file import load, extract_all_information_query, to_df_query
-from baseline.image_processing import pixel_intensity_histogram
+from common.image_processing import pixel_intensity_histogram
 
 
 from sklearn.model_selection import cross_val_score
