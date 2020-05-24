@@ -1,8 +1,5 @@
 import sys
 import os
-# carlos is too lazy to add the root to his path, so we have to do this
-# TAs if you're seeing this I will gladly give up 0.5 of our 'implementation' grade for this
-sys.path.append(os.path.abspath('..'))
 import argparse
 import matplotlib.pyplot as plt
 from generators.simple_generative_model import BaselineGenerativeModel

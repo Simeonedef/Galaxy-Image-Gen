@@ -1,6 +1,6 @@
 import os
 import argparse
-
+import sys
 import pickle
 import cv2
 import pandas as pd
@@ -176,6 +176,7 @@ if __name__ == "__main__":
                                                                             'galaxy')
     parser.add_argument('--min_score', type=float, default=None, help='disregard fake images i.e images with score < min_score,'
                                                                       'used only if dataset is scored')
+                                                                      
     args = parser.parse_args()
 
     if args.dataset == 'scored':
