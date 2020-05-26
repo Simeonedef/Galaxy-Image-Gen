@@ -40,7 +40,7 @@ def get_regressor(args):
 
 def evaluate(generator, regressor, n_images, visualize=False):
     images = generator.generate(n_images)
-    scores = regressor.score(images)
+    scores = np.asarray(regressor.score(images))
 
     if visualize:
         assert n_images >= 2
@@ -54,9 +54,11 @@ def evaluate(generator, regressor, n_images, visualize=False):
 
         ax3.hist(scores)
         ax3.set_title("Histogram of scores")
+        
+        plt.figtext(0.01, 0.01, 'Mean: ' + str(scores.mean()), horizontalalignment='left')
+        plt.figtext(0.7, 0.01, 'StdDev: ' + str(scores.std()), horizontalalignment='left')
         plt.show()
 
-    scores = np.asarray(scores)
     print("Mean score: ", scores.mean())
     print("Stdev: ", scores.std())
 

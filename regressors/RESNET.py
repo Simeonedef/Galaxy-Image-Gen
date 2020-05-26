@@ -14,7 +14,7 @@ class ResnetRegressor:
     def __init__(self):
         self.model = None
         self.device = torch.device("cpu")
-        self.batch_size = 8
+        self.batch_size = 16
         self.size = (224, 224)
         self.load_model()
 
