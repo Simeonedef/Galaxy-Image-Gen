@@ -7,6 +7,7 @@ import pandas as pd
 import os
 import numpy as np
 from PIL import Image
+from tqdm import tqdm
 weights_file = "../pretrained_weights/resnet_weights"
 
 class ResnetRegressor:
@@ -37,7 +38,8 @@ class ResnetRegressor:
     def score(self, images):
         images = self.preprocess(images)
         output = []
-        for i in range(0, images.shape[0], self.batch_size):
+        print("Scoring images:")
+        for i in tqdm(range(0, images.shape[0], self.batch_size)):
             j = min(i + self.batch_size - 1, images.shape[0] - 1)
             with torch.no_grad():
                 cur_output = self.model(images)

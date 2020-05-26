@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+from tqdm import tqdm
 
 class BaselineGenerativeModel:
     """
@@ -33,7 +33,8 @@ class BaselineGenerativeModel:
         self.galaxy_sizes = self.sample_galaxy_sizes()
 
     def generate(self, n_images):
-        return [self.draw() for _ in range(n_images)]
+        print ("Generating images:")
+        return [self.draw() for _ in tqdm(range(n_images))]
 
     def draw(self, show=False):
         self.sample()

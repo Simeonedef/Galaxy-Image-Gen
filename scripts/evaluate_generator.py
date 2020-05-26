@@ -3,6 +3,7 @@ import os
 import argparse
 import matplotlib.pyplot as plt
 from generators.simple_generative_model import BaselineGenerativeModel
+from generators.two_stage_sampling_gan_model import TwoStageModel
 from regressors.RESNET import ResnetRegressor
 import numpy as np
 
@@ -19,9 +20,13 @@ def get_generator(args):
                                         std_galaxy_size=40,
                                         image_width=1000,
                                         image_height=1000)
-        return model
+    elif args.generator == 'two_stage':
+        model = TwoStageModel(image_width=1000,
+                              image_height=1000)
     else:
         raise Exception("model does not exist")
+    
+    return model
 
 
 def get_regressor(args):
@@ -40,13 +45,15 @@ def evaluate(generator, regressor, n_images, visualize=False):
     if visualize:
         assert n_images >= 2
 
-        fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
-        ax1.imshow(images[0], cmap='gray')
+        fig, (ax1, ax2, ax3) = plt.subplots(nrows=1, ncols=3)
+        ax1.imshow(images[0], cmap='gray', vmin=0, vmax=255)
         ax1.set_title('Score: {}'.format(scores[0]))
 
-        ax2.imshow(images[1], cmap='gray')
+        ax2.imshow(images[1], cmap='gray', vmin=0, vmax=255)
         ax2.set_title('Score: {}'.format(scores[1]))
 
+        ax3.hist(scores)
+        ax3.set_title("Histogram of scores")
         plt.show()
 
     scores = np.asarray(scores)
@@ -54,9 +61,10 @@ def evaluate(generator, regressor, n_images, visualize=False):
     print("Stdev: ", scores.std())
 
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Evaluates a given generator model using a regressor model.')
-    parser.add_argument('--generator', type=str, choices=['baseline'], default='baseline', help='name of the generator to evaluate')
+    parser.add_argument('--generator', type=str, choices=['baseline', 'two_stage'], default='baseline', help='name of the generator to evaluate')
     parser.add_argument('--regressor', type=str, choices=['resnet', 'dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
     parser.add_argument('--n_images', type=int, default=16, help='number of images to evaluate on')
     parser.add_argument('--visualize', action='store_true', help='if enabled displays images along with their score')
