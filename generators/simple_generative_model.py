@@ -50,7 +50,10 @@ class BaselineGenerativeModel:
         return img
 
     def sample_num_galaxies(self):
-        return int(np.random.normal(self.mean_num_galaxies, self.std_num_galaxies))
+        # normal distribution will sometimes produce negative number of galaxies
+        # this is a quick workarround, but another distribution may be more appropriate
+        # e.g. something discrete like a binomial or a poisson
+        return max(0, int(np.random.normal(self.mean_num_galaxies, self.std_num_galaxies)))
 
     def sample_galaxy_centers(self):
         galaxy_centers_x = np.random.randint(0, self.image_height, size=self.num_galaxies)

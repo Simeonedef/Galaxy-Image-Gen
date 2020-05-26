@@ -4,7 +4,7 @@ import argparse
 import matplotlib.pyplot as plt
 from generators.simple_generative_model import BaselineGenerativeModel
 from regressors.RESNET import ResnetRegressor
-
+import numpy as np
 
 class DummyRegressor:
     def score(self, images):
@@ -49,13 +49,15 @@ def evaluate(generator, regressor, n_images, visualize=False):
 
         plt.show()
 
-    print(scores)
+    scores = np.asarray(scores)
+    print("Mean score: ", scores.mean())
+    print("Stdev: ", scores.std())
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Evaluates a given generator model using a regressor model.')
     parser.add_argument('--generator', type=str, choices=['baseline'], default='baseline', help='name of the generator to evaluate')
-    parser.add_argument('--regressor', type=str, choices=['resnet, dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
+    parser.add_argument('--regressor', type=str, choices=['resnet', 'dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
     parser.add_argument('--n_images', type=int, default=16, help='number of images to evaluate on')
     parser.add_argument('--visualize', action='store_true', help='if enabled displays images along with their score')
     args = parser.parse_args()
