@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import torch 
+import torch
+from torchvision import utils as vutils
 from torch import nn
 from tqdm import tqdm
 
@@ -148,6 +149,7 @@ class GalaxyGanModel(nn.Module):
 
 if __name__ == "__main__":
     model = TwoStageModel()
-    imgs = model.generate(16)
-    plt.imshow(imgs[0], cmap="gray")
+    imgs = model.generate(9)
+    grid = vutils.make_grid(torch.Tensor(imgs).reshape(9, 1, 1000, 1000), padding=10, pad_value=1, normalize=True, range=(0, 255), nrow=3)
+    plt.imshow(np.transpose(grid, (1, 2, 0)))
     plt.show()
