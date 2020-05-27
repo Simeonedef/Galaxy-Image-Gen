@@ -40,9 +40,9 @@ class ResnetRegressor:
         output = []
         print("Scoring images:")
         for i in tqdm(range(0, images.shape[0], self.batch_size)):
-            j = min(i + self.batch_size - 1, images.shape[0] - 1)
+            j = min(i + self.batch_size, images.shape[0])
             with torch.no_grad():
-                cur_output = self.model(images)
+                cur_output = self.model(images[i:j])
                 cur_output = (cur_output + 1) * 4
                 cur_output = torch.clamp(cur_output, 0, 8)
                 cur_output = cur_output.reshape(-1).tolist()
