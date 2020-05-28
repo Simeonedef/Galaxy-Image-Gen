@@ -41,7 +41,6 @@ def get_regressor(args):
 def evaluate(generator, regressor, n_images, visualize=False):
     images = generator.generate(n_images)
     scores = np.asarray(regressor.score(images))
-
     if visualize:
         assert n_images >= 2
 
