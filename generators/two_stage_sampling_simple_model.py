@@ -19,11 +19,11 @@ class TwoStageSimpleModel:
     the gan that generates galaxies
     - The grid is thus expanded to a 1024*1024 image, which is resized (cropped?) to 1000*1000
     """
-    def __init__(self, image_width=1000, image_height=1000, device="cpu"):
+    def __init__(self, image_width=1000, image_height=1000, device="cpu", mean_num_galaxies=20):
         self.image_width = image_width
         self.image_height = image_height
         self.device = torch.device(device)
-        self.position_model = BaselinePositionModel(grid_size)
+        self.position_model = BaselinePositionModel(grid_size, mean_num_galaxies=mean_num_galaxies)
         self.galaxy_gan = GalaxyGanFirst(device=self.device)
 
     def generate(self, n_images):

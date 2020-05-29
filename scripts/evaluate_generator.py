@@ -4,6 +4,7 @@ import argparse
 import matplotlib.pyplot as plt
 from generators.simple_generative_model import BaselineGenerativeModel
 from generators.two_stage_sampling_gan_model import TwoStageModel
+from generators.two_stage_sampling_simple_model import TwoStageSimpleModel
 from regressors.RESNET import ResnetRegressor
 import numpy as np
 
@@ -20,9 +21,13 @@ def get_generator(args):
                                         std_galaxy_size=40,
                                         image_width=1000,
                                         image_height=1000)
-    elif args.generator == 'two_stage':
+    elif args.generator == 'two_stage_gan':
         model = TwoStageModel(image_width=1000,
                               image_height=1000)
+    elif args.generator == 'two_stage_baseline':
+        model = TwoStageSimpleModel(image_height=1000,
+                                    image_width=1000,
+                                    mean_num_galaxies=args.mean_num_galaxies)
     else:
         raise Exception("model does not exist")
     
@@ -65,10 +70,19 @@ def evaluate(generator, regressor, n_images, visualize=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Evaluates a given generator model using a regressor model.')
-    parser.add_argument('--generator', type=str, choices=['baseline', 'two_stage'], default='baseline', help='name of the generator to evaluate')
+    # general script arguments
+    parser.add_argument('--generator', type=str, choices=['baseline',
+                                                          'two_stage_gan',
+                                                          'two_stage_baseline'], default='baseline', help='name of the generator to evaluate')
     parser.add_argument('--regressor', type=str, choices=['resnet', 'dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
     parser.add_argument('--n_images', type=int, default=16, help='number of images to evaluate on')
     parser.add_argument('--visualize', action='store_true', help='if enabled displays images along with their score')
+
+    # baseline models only arguments
+    parser.add_argument('--mean_num_galaxies', type=int, default=20, help='Mean of normal distribution of the number '
+                                                                          'of galaxies. Used in baseline position '
+                                                                          'generator')
+
     args = parser.parse_args()
 
     generator = get_generator(args)
