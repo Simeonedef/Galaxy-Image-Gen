@@ -17,7 +17,7 @@ class PositionGanModel(nn.Module):
         self.main = nn.Sequential(
             # input is Z, going into a convolution
             # latent_dim x 1 x 1
-            nn.ConvTranspose2d( self.latent_dim_position, gen_base_filters * 8, 4, 1, 0, bias=False),
+            nn.ConvTranspose2d(self.latent_dim_position, gen_base_filters * 8, 4, 1, 0, bias=False),
             nn.ReLU(True),
             nn.BatchNorm2d(gen_base_filters * 8),
             # state size. (gen_base_filters*8) x 4 x 4

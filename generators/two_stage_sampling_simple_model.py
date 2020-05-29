@@ -5,17 +5,17 @@ from torchvision import utils as vutils
 from torch import nn
 from tqdm import tqdm
 from galaxy_patch_generators import GalaxyGanFirst, GalaxyGanConv
-from gan_position_generators import PositionGanModel
-
+from baseline_position_generator import BaselinePositionModel
 patch_size = (32, 32)
 grid_size = (1024//patch_size[0], 1024//patch_size[1])
 batch_size = 8
 
-class TwoStageModel:
+
+class TwoStageSimpleModel:
     """
     A generative model based on first sampling the locations of galaxies and then generating them
     - The positions of galaxies are generated from the position_gan as a binary grid
-    - Places with no galaxies are left black, places with galaxies receive them from 
+    - Places with no galaxies are left black, places with galaxies receive them from
     the gan that generates galaxies
     - The grid is thus expanded to a 1024*1024 image, which is resized (cropped?) to 1000*1000
     """
@@ -23,12 +23,13 @@ class TwoStageModel:
         self.image_width = image_width
         self.image_height = image_height
         self.device = torch.device(device)
-        self.position_gan = PositionGanModel(device=self.device)
+        self.position_model = BaselinePositionModel(grid_size)
         self.galaxy_gan = GalaxyGanFirst(device=self.device)
 
     def generate(self, n_images):
-        positions, n_galaxies = self.position_gan.generate(n_images)
-        galaxies = self.galaxy_gan.generate(n_galaxies)
+        positions = self.position_model.generate(n_images)
+        total_num_galaxies = int(sum([p.sum() for p in positions]))
+        galaxies = self.galaxy_gan.generate(total_num_galaxies)
         cur_galaxy = 0
         imgs = []
         for p in positions:
@@ -47,7 +48,7 @@ class TwoStageModel:
         return imgs
 
 if __name__ == "__main__":
-    model = TwoStageModel()
+    model = TwoStageSimpleModel()
     imgs = model.generate(9)
     grid = vutils.make_grid(torch.Tensor(imgs).reshape(9, 1, 1000, 1000), padding=10, pad_value=1, normalize=True, range=(0, 255), nrow=3)
     plt.imshow(np.transpose(grid, (1, 2, 0)))
