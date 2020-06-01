@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from scipy import stats
 
+from simple_generative_model import draw_galaxy
+
 
 def geom(peak, p, size):
     return stats.geom.rvs(p, size=size).astype(int) + peak - 1
@@ -10,18 +12,18 @@ def geom(peak, p, size):
 
 class SmallLargeClustersGenerativeModel:
     """
-    A simple common generative model.
-    - The number of galaxies is sampled from a normal distribution N(?, ?)
+    A simple generative model. It treats small galaxies and large galaxies separately.
+    - The number of small/large galaxies is sampled from two separate normal distributions
     - The center of each galaxy is sampled from a uniform distribution over the image pixels
-    - The size of each galaxy is sampled from a normal distribution N(?, ?)
+    - The size of each galaxy is sampled from a geometric distribution (separate for large/small)
+    - The intensity of the galaxy sampled from a geometric distribution. The center pixel is the brightest, and the brightness
+      goes down as we move away from the center pixel.
     - The shape of the galaxy is always:
                           *
                          ***
                         *****
                          ***
                           *
-    - The intensity of the galaxy is proportional to its size. The center pixel is the brightest, and the brightness
-      goes down as we move away from the center pixel.
     """
 
     def __init__(self, image_height, image_width,
@@ -57,9 +59,9 @@ class SmallLargeClustersGenerativeModel:
 
         img = np.ones((self.image_height, self.image_width))
         for center, size, intensity in zip(self.galaxy_centers_large, self.galaxy_sizes_large, self.intensities_large):
-            self.draw_galaxy(img, center, size, intensity)
+            draw_galaxy(img, center, size, intensity)
         for center, size, intensity in zip(self.galaxy_centers_small, self.galaxy_sizes_small, self.intensities_small):
-            self.draw_galaxy(img, center, size, intensity)
+            draw_galaxy(img, center, size, intensity)
 
         if show:
             plt.imshow(img, cmap='gray')
@@ -85,53 +87,6 @@ class SmallLargeClustersGenerativeModel:
     def sample_galaxy_intensities(self):
         return geom(1, 0.2, size=self.num_large_galaxies), \
                geom(1, 0.8, size=self.num_small_galaxies)
-
-
-    def draw_galaxy(self, img, center, size, intensity):
-        # dummy version, the intensity of the center pixel is literally equal to the galaxy size
-        # intensity = size
-        fade = 1
-        # draw upper half, including center row
-        for x_delta in range(size):
-            x = center[0] - x_delta
-            if x < 0:
-                break
-
-            # center and to the left
-            for y_delta in range(size - x_delta):
-                y = center[1] - y_delta
-                if y < 0 or y >= img.shape[1]:
-                    break
-                img[x][y] = max(intensity - fade * y_delta - fade * x_delta, 0)
-
-            # to the right
-            for y_delta in range(size - x_delta):
-                y = center[1] + y_delta
-                if y < 0 or y >= img.shape[1]:
-                    break
-
-                img[x][y] = max(intensity - fade * y_delta - fade * x_delta, 0)
-
-        # draw lower half
-        for x_delta in range(1, size):
-            x = center[0] + x_delta
-            if x >= img.shape[0]:
-                break
-
-            # center and to the left
-            for y_delta in range(size - x_delta):
-                y = center[1] - y_delta
-                if y < 0 or y >= img.shape[1]:
-                    break
-                img[x][y] = max(intensity - fade * y_delta - fade * x_delta, 0)
-
-            # to the right
-            for y_delta in range(size - x_delta):
-                y = center[1] + y_delta
-                if y < 0 or y >= img.shape[1]:
-                    break
-
-                img[x][y] = max(intensity - fade * y_delta - fade * x_delta, 0)
 
 
 if __name__ == "__main__":
