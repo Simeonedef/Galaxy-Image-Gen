@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 
-def draw_galaxy(img, center, size, intensity, fade=1):
-    # dummy version, the intensity of the center pixel is literally equal to the galaxy size
-    # intensity = size
-    fade = 1
+def draw_galaxy(img, center, size, intensity, fade='auto'):
+    if fade == 'auto':
+        if size > 20:
+            fade = 0.5
+        else:
+            fade = 1
+
     # draw upper half, including center row
     for x_delta in range(size):
         x = center[0] - x_delta
@@ -18,7 +21,7 @@ def draw_galaxy(img, center, size, intensity, fade=1):
             y = center[1] - y_delta
             if y < 0 or y >= img.shape[1]:
                 break
-            img[x][y] = max(intensity - fade * y_delta - fade * x_delta, 0)
+            img[x][y] = max(int(intensity - fade * y_delta - fade * x_delta), 0)
 
         # to the right
         for y_delta in range(size - x_delta):
@@ -26,7 +29,7 @@ def draw_galaxy(img, center, size, intensity, fade=1):
             if y < 0 or y >= img.shape[1]:
                 break
 
-            img[x][y] = max(intensity - fade * y_delta - fade * x_delta, 0)
+            img[x][y] = max(int(intensity - fade * y_delta - fade * x_delta), 0)
 
     # draw lower half
     for x_delta in range(1, size):

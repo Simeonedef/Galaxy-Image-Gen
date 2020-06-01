@@ -30,7 +30,7 @@ class SmallLargeClustersGenerativeModel:
                  mean_num_large_galaxies=50, std_num_large_galaxies=15,
                  mean_num_small_galaxies=10, std_num_small_galaxies=5,
                  peak_small_galaxies=1, p_small_galaxies=0.7,
-                 peak_large_galaxies=1, p_large_galaxies=0.2):
+                 peak_large_galaxies=1, p_large_galaxies=0.3):
         self.p_large_galaxies = p_large_galaxies
         self.peak_large_galaxies = peak_large_galaxies
         self.p_small_galaxies = p_small_galaxies
