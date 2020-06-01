@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from generators.simple_generative_model import BaselineGenerativeModel
 from generators.two_stage_sampling_gan_model import TwoStageModel
 from generators.two_stage_sampling_simple_model import TwoStageSimpleModel
+from generators.small_large_clusters_generative_model import SmallLargeClustersGenerativeModel
 from regressors.RESNET import ResnetRegressor
 import numpy as np
 
@@ -21,6 +22,8 @@ def get_generator(args):
                                         std_galaxy_size=40,
                                         image_width=1000,
                                         image_height=1000)
+    elif args.generator == 'baseline_small_large':
+        model = SmallLargeClustersGenerativeModel(1000, 1000)
     elif args.generator == 'two_stage_gan':
         model = TwoStageModel(image_width=1000,
                               image_height=1000)
@@ -73,7 +76,8 @@ if __name__ == "__main__":
     # general script arguments
     parser.add_argument('--generator', type=str, choices=['baseline',
                                                           'two_stage_gan',
-                                                          'two_stage_baseline'], default='baseline', help='name of the generator to evaluate')
+                                                          'two_stage_baseline',
+                                                          'baseline_small_large'], default='baseline', help='name of the generator to evaluate')
     parser.add_argument('--regressor', type=str, choices=['resnet', 'dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
     parser.add_argument('--n_images', type=int, default=16, help='number of images to evaluate on')
     parser.add_argument('--visualize', action='store_true', help='if enabled displays images along with their score')

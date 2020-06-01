@@ -17,8 +17,8 @@ class BaselineGenerativeModel:
     - The intensity of the galaxy is proportional to its size. The center pixel is the brightest, and the brightness
       goes down as we move away from the center pixel.
     """
-    def __init__(self, mean_num_galaxies=20, std_num_galaxies=10,
-                       mean_galaxy_size=50, std_galaxy_size=40,
+    def __init__(self, mean_num_galaxies=20, std_num_galaxies=2,
+                       mean_galaxy_size=15, std_galaxy_size=2,
                        image_width=1000, image_height=1000):
         self.image_width = image_width
         self.image_height = image_height
