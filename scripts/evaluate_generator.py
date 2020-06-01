@@ -68,6 +68,7 @@ def evaluate(generator, regressor, n_images, visualize=False):
 
     print("Mean score: ", scores.mean())
     print("Stdev: ", scores.std())
+    print("Top 10 scores: ", scores[np.argsort(scores)][-10:])
 
 
 
