@@ -2,7 +2,7 @@ data
 .idea
 
 # files with extracted image information, they are too large for Github
-analysis/image_data.*
+data/scored_info*
 
 # weights
 pretrained_weights
