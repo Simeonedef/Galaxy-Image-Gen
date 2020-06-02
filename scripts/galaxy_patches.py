@@ -26,6 +26,7 @@ def extract_patches_from_images(df,
                                 image_dir,
                                 image_out_dir, 
                                 csv_out_dir,
+                                labeled,
                                 patch_size=32,
                                 background_threshold=5):
     # list of dicts
@@ -55,7 +56,8 @@ def extract_patches_from_images(df,
             curr_patch_info = {'patch_id': patch_id,
                                'intensity': cluster.get_intensity(),
                                'size': cluster.size(),
-                               'score': df.at[image_id, 'Actual']}
+                               'score': -1 if labeled else df.at[image_id, 'Actual'],
+                               'center': cluster.get_center_pixel()}
             patch_info.append(curr_patch_info)
 
     patch_info_df = to_df(patch_info)
@@ -78,7 +80,8 @@ def scored_images_galaxy_patches(background_threshold=10,
     extract_patches_from_images(scores_df,
                                 scored_data_dir,
                                 scored_data_out_dir,
-                                scored_out_csv, 
+                                scored_out_csv,
+                                False,
                                 patch_size=patch_size,
                                 background_threshold=background_threshold)
 
@@ -99,6 +102,7 @@ def labeled_images_galaxy_patches(background_threshold=10,
                                 labeled_data_dir,
                                 labeled_data_out_dir,
                                 labels_out_csv,
+                                True,
                                 patch_size=patch_size,
                                 background_threshold=background_threshold)
 
