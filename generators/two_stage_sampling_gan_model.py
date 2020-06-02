@@ -4,8 +4,8 @@ import torch
 from torchvision import utils as vutils
 from torch import nn
 from tqdm import tqdm
-from galaxy_patch_generators import GalaxyGanFirst, GalaxyGanConv
-from gan_position_generators import PositionGanModel
+from generators.galaxy_patch_generators import GalaxyGanFirst, GalaxyGanConv
+from generators.gan_position_generators import PositionGanModel
 
 patch_size = (32, 32)
 grid_size = (1024//patch_size[0], 1024//patch_size[1])
@@ -24,7 +24,7 @@ class TwoStageModel:
         self.image_height = image_height
         self.device = torch.device(device)
         self.position_gan = PositionGanModel(device=self.device)
-        self.galaxy_gan = GalaxyGanFirst(device=self.device)
+        self.galaxy_gan = GalaxyGanConv(device=self.device)
 
     def generate(self, n_images):
         positions, n_galaxies = self.position_gan.generate(n_images)

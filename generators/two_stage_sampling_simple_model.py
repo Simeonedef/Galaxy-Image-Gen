@@ -4,8 +4,8 @@ import torch
 from torchvision import utils as vutils
 from torch import nn
 from tqdm import tqdm
-from galaxy_patch_generators import GalaxyGanFirst, GalaxyGanConv
-from baseline_position_generator import BaselinePositionModel
+from generators.galaxy_patch_generators import GalaxyGanFirst, GalaxyGanConv
+from generators.baseline_position_generator import BaselinePositionModel
 patch_size = (32, 32)
 grid_size = (1024//patch_size[0], 1024//patch_size[1])
 batch_size = 8
