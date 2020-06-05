@@ -53,13 +53,15 @@ class SmallLargeClustersGenerativeModel:
         print("Generating images:")
         return [self.draw() for _ in tqdm(range(n_images))]
 
-    def draw(self, show=False):
+    def draw(self, show=False, draw_large=True):
         self.sample()
         assert self.num_large_galaxies is not None
 
         img = np.ones((self.image_height, self.image_width))
-        for center, size, intensity in zip(self.galaxy_centers_large, self.galaxy_sizes_large, self.intensities_large):
-            draw_galaxy(img, center, size, intensity)
+
+        if draw_large:
+            for center, size, intensity in zip(self.galaxy_centers_large, self.galaxy_sizes_large, self.intensities_large):
+                draw_galaxy(img, center, size, intensity)
         for center, size, intensity in zip(self.galaxy_centers_small, self.galaxy_sizes_small, self.intensities_small):
             draw_galaxy(img, center, size, intensity)
 

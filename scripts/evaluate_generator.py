@@ -6,6 +6,7 @@ from generators.simple_generative_model import BaselineGenerativeModel
 from generators.two_stage_sampling_gan_model import TwoStageModel
 from generators.two_stage_sampling_simple_model import TwoStageSimpleModel
 from generators.small_large_clusters_generative_model import SmallLargeClustersGenerativeModel
+from generators.two_stage_combined_model import TwoStageCombinedModel
 from regressors.RESNET import ResnetRegressor
 import numpy as np
 
@@ -31,6 +32,8 @@ def get_generator(args):
         model = TwoStageSimpleModel(image_height=1000,
                                     image_width=1000,
                                     mean_num_galaxies=args.mean_num_galaxies)
+    elif args.generator == 'combined':
+        model = TwoStageCombinedModel()
     else:
         raise Exception("model does not exist")
     

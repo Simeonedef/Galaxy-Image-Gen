@@ -120,4 +120,4 @@ if __name__ == "__main__":
     model = BaselineGenerativeModel(mean_num_galaxies=4, std_num_galaxies=1,
                                     mean_galaxy_size=20, std_galaxy_size=5)
 
-    model.draw()
+    model.draw(show=True)
