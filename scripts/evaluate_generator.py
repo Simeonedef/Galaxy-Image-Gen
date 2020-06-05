@@ -81,7 +81,8 @@ if __name__ == "__main__":
     parser.add_argument('--generator', type=str, choices=['baseline',
                                                           'two_stage_gan',
                                                           'two_stage_baseline',
-                                                          'baseline_small_large'], default='baseline', help='name of the generator to evaluate')
+                                                          'baseline_small_large',
+                                                          'combined'], default='baseline', help='name of the generator to evaluate')
     parser.add_argument('--regressor', type=str, choices=['resnet', 'dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
     parser.add_argument('--n_images', type=int, default=16, help='number of images to evaluate on')
     parser.add_argument('--visualize', action='store_true', help='if enabled displays images along with their score')
