@@ -58,7 +58,7 @@ class GalaxyGanFirst(nn.Module):
         return img
 
 class GalaxyGanConv(nn.Module):
-    def __init__(self, weights_file="../pretrained_weights/galaxy_gan_weights", device=torch.device("cpu"), batch_size=8, patch_size=(32, 32)):
+    def __init__(self, weights_file="../pretrained_weights/galaxy_gan_2.6_t_5_500e", device=torch.device("cpu"), batch_size=8, patch_size=(32, 32)):
         super(GalaxyGanConv, self).__init__()
         gen_base_filters = 64
         self.latent_dim_galaxy = 64

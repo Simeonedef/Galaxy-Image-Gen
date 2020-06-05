@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 
 class PositionGanModel(nn.Module):
-    def __init__(self, weights_file="../pretrained_weights/position_gan_weights", device=torch.device("cpu"), batch_size=8, grid_size=(32, 32)):
+    def __init__(self, weights_file="../pretrained_weights/position_gan_2_t_5_1000e", device=torch.device("cpu"), batch_size=8, grid_size=(32, 32)):
         gen_base_filters = 8
         self.latent_dim_position = 16
         self.batch_size = batch_size

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from scipy import stats
 
-from simple_generative_model import draw_galaxy
+from generators.simple_generative_model import draw_galaxy
 
 
 def geom(peak, p, size):
