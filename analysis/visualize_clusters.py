@@ -30,9 +30,9 @@ def noise_in_background(img, background_threshold):
     clusters = Cluster.find_clusters(img, galaxy_coords)
     for cluster in clusters:
         centerx, centery = cluster.get_center_pixel()
-        print("Cluster center pixel: ", cluster.get_center_pixel())
-        print("Cluster size: ", cluster.size())
-        print("Cluster intensity: ", cluster.get_intensity())
+        # print("Cluster center pixel: ", cluster.get_center_pixel())
+        # print("Cluster size: ", cluster.size())
+        # print("Cluster intensity: ", cluster.get_intensity())
         text = 'Intensity: {}'.format(cluster.get_intensity())
         cv2.putText(img_rgb, text,
                     (centery - 80, centerx - 20),  # coordinates are reversed here for some ungodly reason
@@ -57,7 +57,7 @@ def visualize_noise_in_background(score_threshold=2.0, randomize=True, n_images=
     scores_df = pd.read_csv(labels_dir, index_col='Id')
     assert not scores_df.isnull().values.any()
     scores_df.Actual = scores_df.Actual.astype('float')
-    real_images_df = scores_df[scores_df.Actual >= score_threshold]
+    real_images_df = scores_df[(scores_df.Actual >= 1.0) & (scores_df.Actual < 2.0)]
     real_images_df.index = real_images_df.index.astype(str, copy=False)
     real_image_ids = [image_id for image_id in scored_file_ids if image_id in real_images_df.index.tolist()]
 
@@ -71,6 +71,8 @@ def visualize_noise_in_background(score_threshold=2.0, randomize=True, n_images=
             break
 
         img = cv2.imread(os.path.join(data_dir, '{}.png'.format(image_id)), cv2.IMREAD_GRAYSCALE)
+
+        print(scores_df['Actual'][int(image_id)])
         noise_in_background(img, background_threshold)
 
 
