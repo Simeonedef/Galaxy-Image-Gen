@@ -56,7 +56,7 @@ if __name__ == "__main__":
     print("Best estimator: ", model)
     print('best score: ', search.best_score_)
 
-    with open('clfRf.pickle', 'wb') as f:
+    with open('xgboost_gridsearch.pickle', 'wb') as f:
         pickle.dump(search.__dict__, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     predictions = model.predict(test_X)
