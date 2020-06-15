@@ -2,9 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch
 from torchvision import utils as vutils
-from galaxy_patch_generators import GalaxyGanFirst, GalaxyGanConv
-from gan_position_generators import PositionGanModel
-from small_large_clusters_generative_model import SmallLargeClustersGenerativeModel
+from generators.galaxy_patch_generators import GalaxyGanFirst, GalaxyGanConv
+from generators.gan_position_generators import PositionGanModel
+from generators.small_large_clusters_generative_model import SmallLargeClustersGenerativeModel
 
 patch_size = (32, 32)
 grid_size = (1024 // patch_size[0], 1024 // patch_size[1])
@@ -44,13 +44,12 @@ class TwoStageCombinedModel:
                 right = int((location[1] + 1) * patch_size[1])
                 new_img[top:bottom, left:right] = galaxies[cur_galaxy]
                 cur_galaxy += 1
-
+            
+            # add small intensity clusters
             new_img = new_img[:self.image_height, :self.image_width]
-            small_galaxies_img = self.small_galaxy_gen.draw(draw_large=False)
-            new_img += small_galaxies_img
+            # small_galaxies_img = self.small_galaxy_gen.draw(draw_large=False)
+            # new_img += small_galaxies_img
             new_img = np.clip(new_img, 0, 255)
-            # add small galaxies to new_img
-            # crop for now, maybe in the future resize
             imgs.append(new_img)
         return imgs
 

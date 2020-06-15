@@ -8,6 +8,7 @@ from generators.two_stage_sampling_simple_model import TwoStageSimpleModel
 from generators.small_large_clusters_generative_model import SmallLargeClustersGenerativeModel
 from generators.two_stage_combined_model import TwoStageCombinedModel
 from regressors.RESNET import ResnetRegressor
+from regressors.random_forest import RandomForestRegressor
 import numpy as np
 
 class DummyRegressor:
@@ -43,6 +44,8 @@ def get_generator(args):
 def get_regressor(args):
     if args.regressor == 'resnet':
         return ResnetRegressor()
+    elif args.regressor == 'rf':
+        return RandomForestRegressor()
     elif args.regressor == 'dummy':
         return DummyRegressor()
     else:
@@ -83,7 +86,7 @@ if __name__ == "__main__":
                                                           'two_stage_baseline',
                                                           'baseline_small_large',
                                                           'combined'], default='baseline', help='name of the generator to evaluate')
-    parser.add_argument('--regressor', type=str, choices=['resnet', 'dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
+    parser.add_argument('--regressor', type=str, choices=['resnet', 'rf', 'dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
     parser.add_argument('--n_images', type=int, default=16, help='number of images to evaluate on')
     parser.add_argument('--visualize', action='store_true', help='if enabled displays images along with their score')
 

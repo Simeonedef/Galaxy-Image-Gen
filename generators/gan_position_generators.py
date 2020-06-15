@@ -7,9 +7,9 @@ from tqdm import tqdm
 
 
 class PositionGanModel(nn.Module):
-    def __init__(self, weights_file="../pretrained_weights/position_gan_2_t_5_1000e", device=torch.device("cpu"), batch_size=8, grid_size=(32, 32)):
-        gen_base_filters = 8
-        self.latent_dim_position = 16
+    def __init__(self, weights_file="../pretrained_weights/position_gan_2_t_5_1000e_l100_f16", device=torch.device("cpu"), batch_size=8, grid_size=(32, 32)):
+        gen_base_filters = 16
+        self.latent_dim_position = 100
         self.batch_size = batch_size
         self.device = device
         self.grid_size = grid_size
@@ -43,7 +43,7 @@ class PositionGanModel(nn.Module):
         self.load_state_dict(torch.load(weights_file, map_location=self.device))
         self.eval()
         self.to(self.device)
-        print("Galaxy model loaded!")
+        print("Position model loaded!")
     
     def generate(self, n_images):
         output = []
