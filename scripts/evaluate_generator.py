@@ -9,6 +9,7 @@ from generators.small_large_clusters_generative_model import SmallLargeClustersG
 from generators.two_stage_combined_model import TwoStageCombinedModel
 from regressors.RESNET import ResnetRegressor
 from regressors.random_forest import RandomForestRegressor
+from generators.full_galaxy_gan_generator import FullGalaxyGan
 import numpy as np
 
 class DummyRegressor:
@@ -35,6 +36,8 @@ def get_generator(args):
                                     mean_num_galaxies=args.mean_num_galaxies)
     elif args.generator == 'combined':
         model = TwoStageCombinedModel()
+    elif args.generator == 'full_galaxy_gan':
+        model = FullGalaxyGan()
     else:
         raise Exception("model does not exist")
     
@@ -85,7 +88,8 @@ if __name__ == "__main__":
                                                           'two_stage_gan',
                                                           'two_stage_baseline',
                                                           'baseline_small_large',
-                                                          'combined'], default='baseline', help='name of the generator to evaluate')
+                                                          'combined',
+                                                          'full_galaxy_gan'], default='baseline', help='name of the generator to evaluate')
     parser.add_argument('--regressor', type=str, choices=['resnet', 'rf', 'dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
     parser.add_argument('--n_images', type=int, default=16, help='number of images to evaluate on')
     parser.add_argument('--visualize', action='store_true', help='if enabled displays images along with their score')
