@@ -3,7 +3,7 @@ import os
 import argparse
 import matplotlib.pyplot as plt
 from generators.simple_generative_model import BaselineGenerativeModel
-from generators.two_stage_sampling_gan_model import TwoStageModel
+from generators.two_stage_sampling_gan_model import TwoStageModel, TwoStageConditionalModel
 from generators.two_stage_sampling_simple_model import TwoStageSimpleModel
 from generators.small_large_clusters_generative_model import SmallLargeClustersGenerativeModel
 from generators.two_stage_combined_model import TwoStageCombinedModel
@@ -34,6 +34,9 @@ def get_generator(args):
         model = TwoStageSimpleModel(image_height=1000,
                                     image_width=1000,
                                     mean_num_galaxies=args.mean_num_galaxies)
+    elif args.generator == 'two_stage_conditional':
+        model = TwoStageConditionalModel(image_width=1000,
+                              image_height=1000)
     elif args.generator == 'combined':
         model = TwoStageCombinedModel()
     elif args.generator == 'full_galaxy_gan':
@@ -89,6 +92,7 @@ if __name__ == "__main__":
                                                           'two_stage_baseline',
                                                           'baseline_small_large',
                                                           'combined',
+                                                          'two_stage_conditional',
                                                           'full_galaxy_gan'], default='baseline', help='name of the generator to evaluate')
     parser.add_argument('--regressor', type=str, choices=['resnet', 'rf', 'dummy'], default='resnet', help='name of the regressor that produces the scores for the generator')
     parser.add_argument('--n_images', type=int, default=16, help='number of images to evaluate on')
