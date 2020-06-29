@@ -110,7 +110,7 @@ class GalaxyGanConv(nn.Module):
         return output
 
 class GalaxyGanConditional(nn.Module):
-    def __init__(self, weights_file="../pretrained_weights/conditional_gen_t5", device=torch.device("cpu"), batch_size=8, patch_size=(32, 32)):
+    def __init__(self, weights_file="../pretrained_weights/galaxy_cgan_size_4", device=torch.device("cpu"), batch_size=8, patch_size=(32, 32)):
         super(GalaxyGanConditional, self).__init__()
         gen_base_filters = 64
         self.latent_dim = 100
