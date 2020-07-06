@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from scipy import stats
 
-from generators.simple_generative_model import draw_galaxy
+from simple_generative_model import draw_galaxy
 
 
 def geom(peak, p, size):
@@ -62,6 +62,7 @@ class SmallLargeClustersGenerativeModel:
         if draw_large:
             for center, size, intensity in zip(self.galaxy_centers_large, self.galaxy_sizes_large, self.intensities_large):
                 draw_galaxy(img, center, size, intensity)
+
         for center, size, intensity in zip(self.galaxy_centers_small, self.galaxy_sizes_small, self.intensities_small):
             draw_galaxy(img, center, size, intensity)
 

@@ -28,6 +28,8 @@ def noise_in_background(img, background_threshold):
 
     # write textual cluster information next to each cluster
     clusters = Cluster.find_clusters(img, galaxy_coords)
+    print("# single point clusters:", len([c for c in clusters if c.size() == 1]))
+    print("# intensity 1 clusters:", len([c for c in clusters if c.get_intensity() == 1]))
     for cluster in clusters:
         centerx, centery = cluster.get_center_pixel()
         # print("Cluster center pixel: ", cluster.get_center_pixel())
@@ -52,12 +54,12 @@ def noise_in_background(img, background_threshold):
     plt.show()
 
 
-def visualize_noise_in_background(score_threshold=2.0, randomize=True, n_images=5, background_threshold=10):
+def visualize_noise_in_background(n_images, background_threshold, min_score, max_score, randomize=True):
     scored_file_ids = [x.replace('.png', '') for x in os.listdir(data_dir)]
     scores_df = pd.read_csv(labels_dir, index_col='Id')
     assert not scores_df.isnull().values.any()
     scores_df.Actual = scores_df.Actual.astype('float')
-    real_images_df = scores_df[(scores_df.Actual >= 1.0) & (scores_df.Actual < 2.0)]
+    real_images_df = scores_df[(scores_df.Actual >= min_score) & (scores_df.Actual < max_score)]
     real_images_df.index = real_images_df.index.astype(str, copy=False)
     real_image_ids = [image_id for image_id in scored_file_ids if image_id in real_images_df.index.tolist()]
 
@@ -82,9 +84,15 @@ if __name__ == "__main__":
                                                  'and displays the original image, along with the image where all'
                                                  'the clusters are marked in red.')
     parser.add_argument('--n_images', type=int, default=1, help='number of images to visualize')
-    parser.add_argument('--background_threshold', type=int, default=10, help='minimum pixel intensity (0-255) for a '
-                                                                             'pixel to be considered non-background')
+    parser.add_argument('--min_score', type=float, default=1.0, help='Min score of images to visualize')
+    parser.add_argument('--max_score', type=float, default=2.0, help='Max score of images to visualize')
+    parser.add_argument('--background_threshold', type=int, default=10, help='Pixels strictly above given intensity(0-255) '
+                                                                             'are considered non-background')
     args = parser.parse_args()
 
-    visualize_noise_in_background(n_images=args.n_images, background_threshold=args.background_threshold)
-    # noise_in_background(img)
+    assert args.min_score < args.max_score
+
+    visualize_noise_in_background(args.n_images,
+                                  args.background_threshold,
+                                  args.min_score,
+                                  args.max_score)
