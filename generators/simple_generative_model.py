@@ -7,13 +7,10 @@ def get_radius(size):
     """
         Roughly estimates the 'radius' of a galaxy given its size i.e the number of pixels.
         Assumes the shape of a galaxy is a rotated square, which is an approximation of the actual shape which is
-        an imperfect curvy rhombus. In this approximation, the number of pixels is the area of this square, and the
+        an imperfect curvy rhombus.
+        In this approximation, the number of pixels is the area of this square, and the
         radius is half the diagonal.
     """
-    # small galaxies are exceptions, they don't have a rhombus/ellipsoid shape
-    if size <= 3:
-        return size
-
     side = np.sqrt(size)  # derive side of square from the area of the square
     d = np.sqrt(2) * side  # derive diagonal from square side
     r = int(d / 2)
@@ -40,13 +37,6 @@ def draw_galaxy(img, center, radius, intensity, fade='auto'):
     @param fade: the amount by which the intensity is reduced per pixel as we move away from the center pixel
     @type fade: int (0-255) or 'auto'
     """
-    # if fade == 'auto':
-    #     if radius > 20:
-    #         fade = 0.5
-    #     else:
-    #         fade = 1
-
-    # radius *= 2
 
     # draw upper half, including center row
     for x_delta in range(radius):
@@ -57,20 +47,20 @@ def draw_galaxy(img, center, radius, intensity, fade='auto'):
         # center and to the left
         for y_delta in range(radius - x_delta):
             y = center[1] - y_delta
-            if y < 0 or y >= img.shape[1]:
+            if y < 0:
                 break
             img[x][y] = max(int(intensity - fade * y_delta - fade * x_delta), 0)
 
         # to the right
-        for y_delta in range(radius - x_delta):
-            y = center[1] + y_delta + 1
+        for y_delta in range(1, radius - x_delta):
+            y = center[1] + y_delta
             if y < 0 or y >= img.shape[1]:
                 break
 
             img[x][y] = max(int(intensity - fade * y_delta - fade * x_delta), 0)
 
     # draw lower half
-    for x_delta in range(0, radius):  # for each row
+    for x_delta in range(1, radius + 1):  # for each row
         x = center[0] + x_delta
         if x >= img.shape[0]:
             break
@@ -84,7 +74,7 @@ def draw_galaxy(img, center, radius, intensity, fade='auto'):
 
         # to the right
         for y_delta in range(radius - x_delta):
-            y = center[1] + y_delta + 1
+            y = center[1] + y_delta
             if y < 0 or y >= img.shape[1]:
                 break
 
@@ -107,7 +97,7 @@ class BaselineGenerativeModel:
       goes down as we move away from the center pixel.
     """
     def __init__(self, mean_num_galaxies=8, std_num_galaxies=2,
-                       mean_galaxy_size=20, std_galaxy_size=2,
+                       mean_galaxy_size=15, std_galaxy_size=10,
                        image_width=1000, image_height=1000):
         self.image_width = image_width
         self.image_height = image_height
@@ -122,7 +112,7 @@ class BaselineGenerativeModel:
         self.galaxy_sizes = self.sample_galaxy_sizes()
 
     def generate(self, n_images):
-        print ("Generating images:")
+        print("Generating images:")
         return [self.draw() for _ in tqdm(range(n_images))]
 
     def draw(self, show=False):
@@ -131,9 +121,7 @@ class BaselineGenerativeModel:
 
         img = np.zeros((self.image_height, self.image_width))
         for center, size in zip(self.galaxy_centers, self.galaxy_sizes):
-            print(size, get_radius(size))
             draw_galaxy(img, center, get_radius(size), 255, fade=5)
-            # draw_galaxy(img, center, 9, 255, fade=5)
 
         if show:
             plt.imshow(img, cmap='gray', vmin=0, vmax=255)
