@@ -18,7 +18,7 @@ def get_radius(size):
     return r
 
 
-def draw_galaxy(img, center, radius, intensity, fade='auto'):
+def draw_galaxy(img, center, radius, intensity, fade=5):
     """
     Draws a galaxy of the following fixed shape
           *
@@ -35,9 +35,8 @@ def draw_galaxy(img, center, radius, intensity, fade='auto'):
     @param intensity: peak intensity (at the center) of the galaxy
     @type intensity: int (0-255)
     @param fade: the amount by which the intensity is reduced per pixel as we move away from the center pixel
-    @type fade: int (0-255) or 'auto'
+    @type fade: int (0-255)
     """
-
     # draw upper half, including center row
     for x_delta in range(radius):
         x = center[0] - x_delta
