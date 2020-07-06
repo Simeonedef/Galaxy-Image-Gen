@@ -3,50 +3,88 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 
-def draw_galaxy(img, center, size, intensity, fade='auto'):
-    if fade == 'auto':
-        if size > 20:
-            fade = 0.5
-        else:
-            fade = 1
+def get_radius(size):
+    """
+        Roughly estimates the 'radius' of a galaxy given its size i.e the number of pixels.
+        Assumes the shape of a galaxy is a rotated square, which is an approximation of the actual shape which is
+        an imperfect curvy rhombus. In this approximation, the number of pixels is the area of this square, and the
+        radius is half the diagonal.
+    """
+    # small galaxies are exceptions, they don't have a rhombus/ellipsoid shape
+    if size <= 3:
+        return size
+
+    side = np.sqrt(size)  # derive side of square from the area of the square
+    d = np.sqrt(2) * side  # derive diagonal from square side
+    r = int(d / 2)
+
+    return r
+
+
+def draw_galaxy(img, center, radius, intensity, fade='auto'):
+    """
+    Draws a galaxy of the following fixed shape
+          *
+         ***
+        *****
+         ***
+          *
+    @param img: image to draw the galaxy in
+    @type img: 2D np.array
+    @param center: center pixel of the galaxy
+    @type center: pair
+    @param size: number of pixels in galaxy
+    @type size: int
+    @param intensity: peak intensity (at the center) of the galaxy
+    @type intensity: int (0-255)
+    @param fade: the amount by which the intensity is reduced per pixel as we move away from the center pixel
+    @type fade: int (0-255) or 'auto'
+    """
+    # if fade == 'auto':
+    #     if radius > 20:
+    #         fade = 0.5
+    #     else:
+    #         fade = 1
+
+    # radius *= 2
 
     # draw upper half, including center row
-    for x_delta in range(size):
+    for x_delta in range(radius):
         x = center[0] - x_delta
         if x < 0:
             break
 
         # center and to the left
-        for y_delta in range(size - x_delta):
+        for y_delta in range(radius - x_delta):
             y = center[1] - y_delta
             if y < 0 or y >= img.shape[1]:
                 break
             img[x][y] = max(int(intensity - fade * y_delta - fade * x_delta), 0)
 
         # to the right
-        for y_delta in range(size - x_delta):
-            y = center[1] + y_delta
+        for y_delta in range(radius - x_delta):
+            y = center[1] + y_delta + 1
             if y < 0 or y >= img.shape[1]:
                 break
 
             img[x][y] = max(int(intensity - fade * y_delta - fade * x_delta), 0)
 
     # draw lower half
-    for x_delta in range(1, size):
+    for x_delta in range(0, radius):  # for each row
         x = center[0] + x_delta
         if x >= img.shape[0]:
             break
 
         # center and to the left
-        for y_delta in range(size - x_delta):
+        for y_delta in range(radius - x_delta):  # for each column
             y = center[1] - y_delta
             if y < 0 or y >= img.shape[1]:
                 break
             img[x][y] = max(intensity - fade * y_delta - fade * x_delta, 0)
 
         # to the right
-        for y_delta in range(size - x_delta):
-            y = center[1] + y_delta
+        for y_delta in range(radius - x_delta):
+            y = center[1] + y_delta + 1
             if y < 0 or y >= img.shape[1]:
                 break
 
@@ -68,8 +106,8 @@ class BaselineGenerativeModel:
     - The intensity of the galaxy is proportional to its size. The center pixel is the brightest, and the brightness
       goes down as we move away from the center pixel.
     """
-    def __init__(self, mean_num_galaxies=20, std_num_galaxies=2,
-                       mean_galaxy_size=15, std_galaxy_size=2,
+    def __init__(self, mean_num_galaxies=8, std_num_galaxies=2,
+                       mean_galaxy_size=20, std_galaxy_size=2,
                        image_width=1000, image_height=1000):
         self.image_width = image_width
         self.image_height = image_height
@@ -91,20 +129,19 @@ class BaselineGenerativeModel:
         self.sample()
         assert self.num_galaxies is not None
 
-        img = np.ones((self.image_height, self.image_width))
+        img = np.zeros((self.image_height, self.image_width))
         for center, size in zip(self.galaxy_centers, self.galaxy_sizes):
-            draw_galaxy(img, center, size, size, fade=1)
+            print(size, get_radius(size))
+            draw_galaxy(img, center, get_radius(size), 255, fade=5)
+            # draw_galaxy(img, center, 9, 255, fade=5)
 
         if show:
-            plt.imshow(img, cmap='gray')
+            plt.imshow(img, cmap='gray', vmin=0, vmax=255)
             plt.show()
 
         return img
 
     def sample_num_galaxies(self):
-        # normal distribution will sometimes produce negative number of galaxies
-        # this is a quick workarround, but another distribution may be more appropriate
-        # e.g. something discrete like a binomial or a poisson
         return max(0, int(np.random.normal(self.mean_num_galaxies, self.std_num_galaxies)))
 
     def sample_galaxy_centers(self):
@@ -117,7 +154,5 @@ class BaselineGenerativeModel:
 
 
 if __name__ == "__main__":
-    model = BaselineGenerativeModel(mean_num_galaxies=4, std_num_galaxies=1,
-                                    mean_galaxy_size=20, std_galaxy_size=5)
-
+    model = BaselineGenerativeModel()
     model.draw(show=True)
