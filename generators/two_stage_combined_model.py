@@ -4,7 +4,7 @@ import torch
 from torchvision import utils as vutils
 from generators.galaxy_patch_generators import GalaxyGanFirst, GalaxyGanConv
 from generators.gan_position_generators import PositionGanModel
-from generators.small_large_clusters_generative_model import SmallLargeClustersGenerativeModel
+from generators.baseline_2 import SmallLargeClustersGenerativeModel
 
 patch_size = (32, 32)
 grid_size = (1024 // patch_size[0], 1024 // patch_size[1])

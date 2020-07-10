@@ -2,10 +2,10 @@ import sys
 import os
 import argparse
 import matplotlib.pyplot as plt
-from generators.simple_generative_model import BaselineGenerativeModel
+from generators.baseline_1 import BaselineGenerativeModel
 from generators.two_stage_sampling_gan_model import TwoStageModel, TwoStageConditionalModel
 from generators.two_stage_sampling_simple_model import TwoStageSimpleModel
-from generators.small_large_clusters_generative_model import SmallLargeClustersGenerativeModel
+from generators.baseline_2 import SmallLargeClustersGenerativeModel
 from generators.two_stage_combined_model import TwoStageCombinedModel
 from regressors.RESNET import ResnetRegressor
 from regressors.random_forest import RandomForestRegressor

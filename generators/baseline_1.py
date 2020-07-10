@@ -82,6 +82,8 @@ def draw_galaxy(img, center, radius, intensity, fade=5):
 
 def draw_small_galaxy(img, center, size, intensity):
     """
+    Draws small galaxies (num pixels < 5). This is a separate method since these small clusters cannot have the diamond shape
+    of larger clusters.
     @param img: image to draw the galaxy in
     @type img: 2D np.array
     @param center: center pixel of the galaxy
@@ -94,7 +96,6 @@ def draw_small_galaxy(img, center, size, intensity):
     if size == 1:
         img[center[0], center[1]] = intensity
     if size == 2:
-        print("Drawing second at: ", center[0], max(0, center[1]-1))
         img[center[0], max(0, center[1]-1)] = 200
     if size == 3:
         img[min(img.shape[0]-1, center[0] + 1), center[1]] = 150
