@@ -7,10 +7,10 @@ import argparse
 import cv2
 import matplotlib.pyplot as plt
 import pandas as pd
-from common.image_processing import get_galaxy_pixels, Cluster
-
 import sys
 sys.path.append(os.path.abspath('..'))
+from common.image_processing import get_galaxy_pixels, Cluster
+
 
 data_dir = os.path.join('..', 'data', 'scored')
 labels_dir = os.path.join('..', 'data', 'scored.csv')
@@ -72,6 +72,10 @@ def visualize_noise_in_background(n_images, background_threshold, min_score, max
             break
 
         img = cv2.imread(os.path.join(data_dir, '{}.png'.format(image_id)), cv2.IMREAD_GRAYSCALE)
+
+        import numpy as np
+        if np.count_nonzero(img == 0) > 900000:
+            continue
 
         print(scores_df['Actual'][int(image_id)])
         noise_in_background(img, background_threshold)
