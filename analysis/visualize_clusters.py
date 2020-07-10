@@ -7,9 +7,10 @@ import argparse
 import cv2
 import matplotlib.pyplot as plt
 import pandas as pd
+from common.image_processing import get_galaxy_pixels, Cluster
+
 import sys
 sys.path.append(os.path.abspath('..'))
-from common.image_processing import get_galaxy_pixels, Cluster
 
 data_dir = os.path.join('..', 'data', 'scored')
 labels_dir = os.path.join('..', 'data', 'scored.csv')
@@ -30,11 +31,9 @@ def noise_in_background(img, background_threshold):
     clusters = Cluster.find_clusters(img, galaxy_coords)
     print("# single point clusters:", len([c for c in clusters if c.size() == 1]))
     print("# intensity 1 clusters:", len([c for c in clusters if c.get_intensity() == 1]))
+    print("Num of 0 intensity pixels: ", img[img == 0].size)
     for cluster in clusters:
         centerx, centery = cluster.get_center_pixel()
-        # print("Cluster center pixel: ", cluster.get_center_pixel())
-        # print("Cluster size: ", cluster.size())
-        # print("Cluster intensity: ", cluster.get_intensity())
         text = 'Intensity: {}'.format(cluster.get_intensity())
         cv2.putText(img_rgb, text,
                     (centery - 80, centerx - 20),  # coordinates are reversed here for some ungodly reason

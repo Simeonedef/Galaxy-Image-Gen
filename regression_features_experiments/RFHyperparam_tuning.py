@@ -13,7 +13,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import cv2
 import swifter
 
-from analysis.generate_cluster_information_file import load, extract_all_information_query, to_df_query
+from analysis.generate_cluster_information_file import load_scored_info, extract_all_information_query, to_df_query
 from common.image_processing import pixel_intensity_histogram
 
 

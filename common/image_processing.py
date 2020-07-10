@@ -144,15 +144,8 @@ def get_background(img):
     return background_x, background_y
 
 
-# def estimate_background_intensity_threshold(img, background_pixels_ratio=0.8):
-#     pixel_intesity_cnts = pixel_intensity_histogram(img)
-#     num_total_pixels = img.shape[0] * img.shape[1]
-#
-#     num_background_pixels = 0
-#     for intensity, cnt in pixel_value_cnts.values():
-#         num_background_pixels += cnt
-#         if num_background_pixels / num_total_pixels > background_pixels_ratio:
-#             break
+def num_background_pixels(img):
+    return int(np.count_nonzero(img == 0))
 
 
 def estimate_background_intensity_threshold(img, background_pixels_ratio=0.8):
