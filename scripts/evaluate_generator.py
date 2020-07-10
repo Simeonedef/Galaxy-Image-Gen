@@ -26,7 +26,9 @@ def get_generator(args):
                                         image_width=1000,
                                         image_height=1000)
     elif args.generator == 'baseline_small_large':
-        model = SmallLargeClustersGenerativeModel(1000, 1000)
+        model = SmallLargeClustersGenerativeModel(1000, 1000, use_visual_heuristic=False)
+    elif args.generator == 'baseline_small_large_with_heuristic':
+        model = SmallLargeClustersGenerativeModel(1000, 1000, use_visual_heuristic=True)
     elif args.generator == 'two_stage_gan':
         model = TwoStageModel(image_width=1000,
                               image_height=1000)
@@ -91,6 +93,7 @@ if __name__ == "__main__":
                                                           'two_stage_gan',
                                                           'two_stage_baseline',
                                                           'baseline_small_large',
+                                                          'baseline_small_large_with_heuristic',
                                                           'combined',
                                                           'two_stage_conditional',
                                                           'full_galaxy_gan'], default='baseline', help='name of the generator to evaluate')
