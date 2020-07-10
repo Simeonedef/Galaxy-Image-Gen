@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from scipy import stats
 
-from simple_generative_model import draw_galaxy
+from simple_generative_model import draw_galaxy, draw_small_galaxy, get_radius
 
 
 def geom(peak, p, size):
@@ -30,7 +30,7 @@ class SmallLargeClustersGenerativeModel:
                  mean_num_large_galaxies=50, std_num_large_galaxies=15,
                  mean_num_small_galaxies=10, std_num_small_galaxies=5,
                  peak_small_galaxies=1, p_small_galaxies=0.7,
-                 peak_large_galaxies=1, p_large_galaxies=0.3):
+                 peak_large_galaxies=5, p_large_galaxies=0.1):
         self.p_large_galaxies = p_large_galaxies
         self.peak_large_galaxies = peak_large_galaxies
         self.p_small_galaxies = p_small_galaxies
@@ -61,10 +61,13 @@ class SmallLargeClustersGenerativeModel:
 
         if draw_large:
             for center, size, intensity in zip(self.galaxy_centers_large, self.galaxy_sizes_large, self.intensities_large):
-                draw_galaxy(img, center, size, intensity)
+                radius = get_radius(size)
+                print(size, radius)
+                draw_galaxy(img, center, radius, intensity, fade=1)
 
         for center, size, intensity in zip(self.galaxy_centers_small, self.galaxy_sizes_small, self.intensities_small):
-            draw_galaxy(img, center, size, intensity)
+            intensity = 255
+            draw_small_galaxy(img, center, size, intensity)
 
         if show:
             plt.imshow(img, cmap='gray')
@@ -95,4 +98,4 @@ class SmallLargeClustersGenerativeModel:
 if __name__ == "__main__":
     model = SmallLargeClustersGenerativeModel(1000, 1000)
 
-    model.draw(show=True)
+    model.draw(show=True, draw_large=False)

@@ -7,7 +7,7 @@ def get_radius(size):
     """
         Roughly estimates the 'radius' of a galaxy given its size i.e the number of pixels.
         Assumes the shape of a galaxy is a rotated square, which is an approximation of the actual shape which is
-        an imperfect curvy rhombus.
+        an imperfect 'curvy' rhombus.
         In this approximation, the number of pixels is the area of this square, and the
         radius is half the diagonal.
     """
@@ -30,8 +30,8 @@ def draw_galaxy(img, center, radius, intensity, fade=5):
     @type img: 2D np.array
     @param center: center pixel of the galaxy
     @type center: pair
-    @param size: number of pixels in galaxy
-    @type size: int
+    @param radius: radius of galaxy (in pixels)
+    @type radius: int
     @param intensity: peak intensity (at the center) of the galaxy
     @type intensity: int (0-255)
     @param fade: the amount by which the intensity is reduced per pixel as we move away from the center pixel
@@ -80,9 +80,31 @@ def draw_galaxy(img, center, radius, intensity, fade=5):
             img[x][y] = max(intensity - fade * y_delta - fade * x_delta, 0)
 
 
+def draw_small_galaxy(img, center, size, intensity):
+    """
+    @param img: image to draw the galaxy in
+    @type img: 2D np.array
+    @param center: center pixel of the galaxy
+    @type center: pair
+    @param size: num of pixels in small galaxy
+    @type size: int
+    @param intensity: peak intensity (at the center) of the galaxy
+    @type intensity: int (0-255)
+    """
+    if size == 1:
+        img[center[0], center[1]] = intensity
+    if size == 2:
+        print("Drawing second at: ", center[0], max(0, center[1]-1))
+        img[center[0], max(0, center[1]-1)] = 200
+    if size == 3:
+        img[min(img.shape[0]-1, center[0] + 1), center[1]] = 150
+    if size == 4:
+        img[min(img.shape[0]-1, center[0] + 1), max(0, center[1]-1)] = intensity
+
+
 class BaselineGenerativeModel:
     """
-    A simple common generative model.
+    A simple generative model.
     - The number of galaxies is sampled from a normal distribution N(?, ?)
     - The center of each galaxy is sampled from a uniform distribution over the image pixels
     - The size of each galaxy is sampled from a normal distribution N(?, ?)
