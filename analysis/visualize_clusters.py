@@ -73,10 +73,6 @@ def visualize_noise_in_background(n_images, background_threshold, min_score, max
 
         img = cv2.imread(os.path.join(data_dir, '{}.png'.format(image_id)), cv2.IMREAD_GRAYSCALE)
 
-        import numpy as np
-        if np.count_nonzero(img == 0) > 900000:
-            continue
-
         print(scores_df['Actual'][int(image_id)])
         noise_in_background(img, background_threshold)
 
