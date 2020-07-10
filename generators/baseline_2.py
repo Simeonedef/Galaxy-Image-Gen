@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from scipy import stats
 
-from baseline_1 import draw_galaxy, draw_small_galaxy, get_radius
+from common.galaxy_drawing import draw_small_galaxy, draw_galaxy, get_radius
 
 
 def geom(peak, p, size):
