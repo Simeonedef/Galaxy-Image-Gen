@@ -65,7 +65,8 @@ class BaselineGenerativeModel:
         return zip(galaxy_centers_x, galaxy_centers_y)
 
     def sample_galaxy_sizes(self):
-        return np.random.normal(self.mean_galaxy_size, self.std_galaxy_size, size=self.num_galaxies).astype(int)
+        # clipping makes sure we never get negative galaxy sizes
+        return np.clip(np.random.normal(self.mean_galaxy_size, self.std_galaxy_size, size=self.num_galaxies).astype(int), 0, 10000)
 
 
 if __name__ == "__main__":
