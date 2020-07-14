@@ -68,7 +68,6 @@ class FullGalaxyGan(nn.Module):
                 images = self(noise).detach().cpu().numpy()
             if self.normalize:
                 images = norm(images).data
-                print(images)
             else:
                 images = (images + 1) / 2
             images = (images * 255).astype(np.uint8)

@@ -65,14 +65,14 @@ class PositionGanModel(nn.Module):
         return output, n_galaxies
 
 class PositionGanConditional(nn.Module):
-    def __init__(self, weights_file="../pretrained_weights/position_cgan_size_4", device=torch.device("cpu"), batch_size=8, grid_size=(32, 32)):
+    def __init__(self, weights_file="../pretrained_weights/position_cgan_size", device=torch.device("cpu"), batch_size=8, grid_size=(32, 32)):
         super(PositionGanConditional, self).__init__()
         self.latent_dim = 100
         self.batch_size = batch_size
         self.device = device
         self.grid_size = grid_size
-        gen_base_filters = 64
-        n_classes = 5
+        gen_base_filters = 32
+        n_classes = 4
         self.main = nn.Sequential(
             # input is Z, going into a convolution
             # latent_dim x 1 x 1
