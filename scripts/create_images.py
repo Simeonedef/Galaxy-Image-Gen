@@ -7,7 +7,7 @@ from PIL import Image
 import cv2
 from generators.full_galaxy_gan_generator import FullGalaxyGan
 from generators.two_stage_sampling_gan_model import TwoStageModel, TwoStageConditionalModel
-from generators.two_stage_sampling_simple_model import TwoStageSimpleModel
+from generators.baseline_2 import SmallLargeClustersGenerativeModel
 from generators.galaxy_patch_generators import GalaxyGanConditional, GalaxyGanConv
 import torchvision.utils as vutils
 import torch
@@ -17,7 +17,8 @@ results_dir = '../data/full_galaxies_methods'
 if not os.path.exists(results_dir):
     os.mkdir(results_dir)
 
-two_stage_simple = TwoStageSimpleModel()
+
+baseline = SmallLargeClustersGenerativeModel(1000, 1000)
 full_galaxy = FullGalaxyGan()
 two_stage = TwoStageModel()
 two_stage_conditional = TwoStageConditionalModel()
@@ -27,7 +28,7 @@ for i in range(n_samples):
     images = []
     images = [np.asarray(Image.open(os.path.join(galaxies_directory, img)).convert('L')) for img in os.listdir(galaxies_directory)[i*images_per_row:(i + 1) * images_per_row]]
 
-    images += two_stage_simple.generate(images_per_row)
+    images += baseline.generate(images_per_row)
     images += full_galaxy.generate(images_per_row)
     images += two_stage.generate(images_per_row)
     images += two_stage_conditional.generate(images_per_row)
