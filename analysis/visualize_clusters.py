@@ -1,5 +1,5 @@
 """
-    `python visualize.py -h` for usage help
+    `python visualize_clusters.py -h` for usage help
 """
 import os
 import random

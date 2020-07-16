@@ -27,14 +27,14 @@ if __name__ == "__main__":
     y = train_y.to_numpy()
     test_X = test_X_df.to_numpy()
 
-    hyperparams = {
-        'n_estimators': [1000, 2000, 5000],
-        "learning_rate": [0.05, 0.10, 0.15, 0.20, 0.25, 0.30],
-         "max_depth": [3, 4, 5, 6, 8, 10, 12, 15],
-         "min_child_weight": [1, 3, 5, 7],
-         "gamma": [0.0, 0.1, 0.2, 0.3, 0.4],
-         "colsample_bytree": [0.3, 0.4, 0.5, 0.7]
-    }
+    # hyperparams = {
+    #     'n_estimators': [1000, 2000, 5000],
+    #     "learning_rate": [0.05, 0.10, 0.15, 0.20, 0.25, 0.30],
+    #      "max_depth": [3, 4, 5, 6, 8, 10, 12, 15],
+    #      "min_child_weight": [1, 3, 5, 7],
+    #      "gamma": [0.0, 0.1, 0.2, 0.3, 0.4],
+    #      "colsample_bytree": [0.3, 0.4, 0.5, 0.7]
+    # }
     hyperparams = {
         "clf__objective": ["reg:squarederror"],
         "clf__learning_rate": [0.05, 0.10, 0.15, 0.20, 0.25, 0.30],
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     print("Testing predictions: ", predictions)
 
-    predictions_file_ids = [x.replace('.png', '') for x in os.listdir(os.path.join('..', 'data', 'query'))]
+    predictions_file_ids = [x.replace('.png', '') for x in os.listdir(os.path.join('../..', 'data', 'query'))]
     results = {'Id': predictions_file_ids, 'Predicted': predictions.reshape(-1)}
     results = pd.DataFrame(data=results, dtype='float')
     results.Id = results.Id.astype('int')

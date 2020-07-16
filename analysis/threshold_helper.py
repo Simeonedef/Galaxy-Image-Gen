@@ -1,5 +1,5 @@
 """
-    `python visualize.py -h` for usage help
+    `python threshold_helper.py -h` for usage help
 """
 import os
 import random
@@ -115,7 +115,7 @@ def visualize_noise_in_background(score_threshold=2.0, randomize=True, grid=Fals
         noise_in_background_grid(imgs)
     else:
         img = cv2.imread(os.path.join(data_dir, '{}.png'.format(real_image_ids[0])), cv2.IMREAD_GRAYSCALE)
-        nose_in_background(img)
+        noise_in_background(img)
 
 
 if __name__ == "__main__":
