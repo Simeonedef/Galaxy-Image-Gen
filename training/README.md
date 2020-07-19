@@ -11,7 +11,7 @@ This directory contains jupyter notebooks used to train the various methods we u
 * *galaxy_features_regressor*: Regressor baseline #1, uses manually extracted features based on clusters.
     - *feature_selection.ipynb*: extracts (and analyzes) cluster-based features, to be later used as features for different
      regression models.\
-     Prerequisite: */data/scored_info.csv* \
+     Prerequisite: */data/scored_info.csv* (download from https://polybox.ethz.ch/index.php/s/BkYCGbxdSVkzavW) \
      Produces: *train_X.csv*, *train_y.csv*, *test_X.csv*. These files are already precomputed and uploaded the directory,
      it's not necessary to run the notebook from scratch. 
    - *baseline_reg.ipynb*: evaluates multiple models trained on the previously extracted cluster-based features.
