@@ -5,6 +5,9 @@
 ### Setup
 Run `python setup.py develop`
 
+Download the desired models from (polybox link here) or obtain them by running the training.
+Place them in a directory named "pretrained_weights" in the root directory.
+
 ### Project directories
 1. *generators*: contains the generative model classes for all our generative models
 2. *regressors*: contains the regressor model classes for all our regression models
