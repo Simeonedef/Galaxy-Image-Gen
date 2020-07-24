@@ -3,7 +3,8 @@
 *TODO: Insert high level description here (after we finish report)*
 
 ### Setup
-Run `python setup.py develop`
+Run `python setup.py develop`.
+
 Run `conda env create -f environment.yml`, followed by `conda activate galaxy_gen`
 
 
