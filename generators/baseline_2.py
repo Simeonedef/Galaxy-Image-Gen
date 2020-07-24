@@ -90,7 +90,7 @@ class SmallLargeClustersGenerativeModel:
         if draw_large:
             for center, size, intensity in zip(self.galaxy_centers_large, self.galaxy_sizes_large, self.intensities_large):
                 radius = get_radius(size)
-                print(size, radius, intensity)
+                # print(size, radius, intensity)
                 draw_galaxy(img, center, radius, intensity, fade=5)
 
         for center, size, intensity in zip(self.galaxy_centers_small, self.galaxy_sizes_small, self.intensities_small):

@@ -47,7 +47,7 @@ class BaselineGenerativeModel:
         img = np.zeros((self.image_height, self.image_width))
         for center, size in zip(self.galaxy_centers, self.galaxy_sizes):
             radius = get_radius(size)
-            print(radius, size)
+            # print(radius, size)
             draw_galaxy(img, center, get_radius(size), 255, fade=5)
 
         if show:
