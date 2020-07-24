@@ -4,6 +4,8 @@
 
 ### Setup
 Run `python setup.py develop`
+Run `conda env create -f environment.yml`, followed by `conda activate galaxy_gen`
+
 
 If necessary, download the desired models from (polybox link here) or obtain them by running the training.
 Place them in a directory named "pretrained_weights" in the root directory.
