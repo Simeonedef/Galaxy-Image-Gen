@@ -5,3 +5,12 @@ Generates a pkl file with information about the clusters present in each image, 
 
 Threshold helper:
 Visualization tool used to understand the effect of different intensity threshold values in determining which clusters in an image are detected as galaxies.
+
+Analysis patches and positions:
+Notebook containing two experiments: one to analyse how the position of the
+patches influences the score and one to analyse how the choice of patches
+influences the score. 
+
+FFT visualize: 
+Visualization tool for Fourier transform representation of images with 
+different scores. 
