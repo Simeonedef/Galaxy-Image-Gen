@@ -26,8 +26,8 @@ def generate_scored_images_info_file(min_score, background_threshold=None):
     Generates a cluster information file for the scored images.
     @param min_score: only consider images above given score threshold
     @type min_score: float, or None (no threshold if None)
-    @param background_threshold:
-    @type background_threshold:
+    @param background_threshold: pixels above this intensity threshold are consider a part of a cluster
+    @type background_threshold: int (0-255), or None (threshold automatically calculated)
     @return: No return, saves the scored image cluster information both as a .pkl and a .csv
     """
     scored_image_ids = [x.replace('.png', '') for x in os.listdir(scored_images_dir)]
@@ -198,9 +198,10 @@ def to_df(data):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Creates a file containing galaxy information about the labeled or scored images.')
     parser.add_argument('--dataset', type=str, choices=['scored', 'labeled'], default='scored', help='scored or labeled dataset')
-    parser.add_argument('--background_threshold', type=int, default=5, help='minimum pixel intensity (0-255) for a '
+    parser.add_argument('--background_threshold', type=int, default=None, help='minimum pixel intensity (0-255) for a '
                                                                             'pixel to be considered as part of a '
-                                                                            'galaxy')
+                                                                            'galaxy, or None (to automatically computer'
+                                                                             'the threshold')
     parser.add_argument('--min_score', type=float, default=None, help='disregard fake images i.e images with score < min_score,'
                                                                       'used only if dataset is scored. Has no effect on'
                                                                       'labeled images.')
