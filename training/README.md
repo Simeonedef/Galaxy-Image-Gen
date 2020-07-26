@@ -1,7 +1,7 @@
 This directory contains jupyter notebooks used to train the various methods we used.
 
 #### Generative models
-Both of these models require datasets to be generated using two scripts. The first one generates galaxy patches, and is not included in the submission. In the scripts directory, run `python galaxy_patches.py`. 
+Both of these models require datasets to be generated using two scripts. The first one generates galaxy patches, and is mentioned in the main README file. If you have not alreadu, please in the scripts directory, run `python galaxy_patches.py`. 
 
 **The files for the second one are already included. If necessary**, to generate these, in the analysis directory, run `python generate_cluster_information_file.py --dataset labeled --background_threshold 5 --min_score 2` followed by `python generate_cluster_information_file.py --dataset scored --background_threshold 5 --min_score 2`. These both take some time.
 
