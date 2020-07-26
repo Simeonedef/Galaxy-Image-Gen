@@ -1,4 +1,4 @@
-name: rai
+name: galaxy_gen
 channels:
   - pytorch
   - anaconda
