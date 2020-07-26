@@ -8,7 +8,7 @@ Run `python setup.py develop`.
 
 Run `conda env create -f environment.yml`, followed by `conda activate galaxy_gen`.
 
-Under the scripts directory, run `python galaxy_patches.py`.
+In order to train the two-stage models, under the scripts directory, run `python galaxy_patches.py`.
 
 ### Project directories
 1. *generators*: contains the generative model classes for all our generative models
