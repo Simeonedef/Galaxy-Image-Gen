@@ -24,4 +24,4 @@ Note: The baselines require no training, hence there's no file here with them.
 * *cnn_reg*: Regressor baseline #2, uses a CNN to directly compute the score. *CNNRegressor.ipynb* trains a CNN from scratch,
 *RESNET.ipynb* uses a pre-trained backbone network.
 
-* *main_regressor*: Contains the best performing XGBoost regressor we trained as well as some feature extraction and exploration notebooks.
+* *main_regressor*: Contains the best performing XGBoost regressor we trained as well as some feature extraction and exploration notebooks. To produce the file to submit to kaggle, run the notebook. A file named *res.csv* will be saved to the *main_regressor* directory.
