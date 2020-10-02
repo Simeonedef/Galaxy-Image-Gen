@@ -1,5 +1,7 @@
 # Galaxy-Image-Gen
 
+Please refer to the [project report](report.pdf) for details. 
+
 ### Setup
 
 Place the 3 image folders *labeled*, *query* and *scored* in the data directory.
