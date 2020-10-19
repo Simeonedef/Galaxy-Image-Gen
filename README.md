@@ -2,7 +2,7 @@
   2-Stage GAN for Sparse Galaxy Image Generation
 </h1>
 <p align="center">Siméone de Fremond, Carlos Gomes, Andra-Maria Ilies, Andrej Ivanov<br>
-                    Please refer to the [project report](report.pdf) for details. <br>
+                    Please refer to the <a href="report.pdf">project report</a> for details. <br>
 <img src="https://ethz.ch/etc/designs/ethz/img/header/ethz_logo_black.svg" width="150px"><br>
 The rapid growth of astronomical data in recent years has prompted interest in building generative models of cosmological images. This paper focuses on 2 related tasks in this area: 1) generating realistic images and 2) scoring how realistic an image is. We begin by formalizing  the  structure  of  the  images  in  terms  of  galaxies and their properties, and show that simplistic baselines are not sufficient for both tasks. We then present a novel generative approach consisting of a two-stage sampling generative adversarial neural network (GAN), capturing the position of cosmological objects and their representation separately, which produces diverse and realistic looking images. Furthermore, we develop an accurate scoring method based on Power Spectrum features. Using this scoring method we empirically show that our two-stage generative model significantly outperforms both the baselines and a standard GAN approach. Finally, we provide experiments towards understanding of the most important factors in our model.</p>
 <div align="center">
